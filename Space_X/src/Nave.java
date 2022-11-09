@@ -1,32 +1,37 @@
-package RECURSOS;
-import processing.core.*;
 import java.util.ArrayList;
 
-public class Nave extends Mapa{
-    protected ArrayList<PVector> ship = new ArrayList<>();
-    protected int x,y,cons,pico;
+import processing.core.*;
 
-    public Nave(int posx,int posy, int cons) { // const = 1 es enemigo cons=-1 nave
-        super();
-        this.x=posx;
-        this.y=posy;
-        this.cons = cons;
+public class Nave {
+    protected PVector pos;
+    protected Bala balas;
+
+    public Nave(float posx, float posy, int orientacion) { // orientaciont = 1 es enemigo orientacion=-1 nave
+        pos = new PVector(posx, posy);
+        this.balas = new Bala(orientacion);
     }
 
-    protected void crear(int a, int b, int f) {
-        for (int i = 0; i < f; i++) {
-            PVector A1 = new PVector(x + a, y + cons*(b + i));
-            PVector A2 = new PVector(x - a, y + cons*(b + i));
-            ship.add(A1);
-            pico++;
-            if (a!= 0) {
-                ship.add(A2);
-                pico++;
-            }
+    public void disparar() {
+        balas.disparar(pos);
+    }
+
+    public ArrayList<PVector> getBalas(){
+        return balas.balas;
+    }
+
+    public void actualizacion() {
+        balas.moverBala();
+    }
+
+    public void mover(String direccion) {
+        if (direccion == "d") {
+            pos.x = pos.x + 1;
+        } else if (direccion == "a") {
+            pos.x = pos.x - 1;
+        } else if (direccion == "w") {
+            pos.y = pos.y - 1;
+        } else if (direccion == "s") {
+            pos.y = pos.y + 1;
         }
-    }
-
-    protected PVector getPico(){
-        return ship.get(pico-2);
     }
 }
