@@ -1,3 +1,4 @@
+package RECURSOS;
 public class Jugador extends Cohete {
     public int balas = 20;
 
