@@ -2,17 +2,15 @@ import java.util.ArrayList;
 import processing.core.*;
 
 public class Procesos extends PApplet {
-    private static int bits = 5;
+    private int bits = Mapa.bits;
     private int x = 0;
     private boolean game = false;
-    public static int ancho = 560/bits;
-    public static int alto = 700/bits;
-    Nave nave = new Nave(ancho / 2, alto / 2, -1);
+    Nave nave = new Nave(Mapa.ancho / 2, Mapa.alto / 2, -1);
     PImage fondo, corazon, welcomescreen, bala, start, logo, jugador;
 
     @Override
     public void settings() {
-        size(ancho*bits, alto*bits); // (ancho,alto) de la ventana
+        size(Mapa.ancho*bits, Mapa.alto*bits); // (ancho,alto) de la ventana
     }
 
     @Override
@@ -25,7 +23,7 @@ public class Procesos extends PApplet {
         bala = loadImage("/img/bala.png");
         start = loadImage("/img/start.png");
         welcomescreen = loadImage("/img/welcome.jpg");
-        frameRate(alto);
+        frameRate(Mapa.alto);
     }
 
     @Override
@@ -59,9 +57,9 @@ public class Procesos extends PApplet {
     }
 
     private void mostrarNave() {
-        imageMode(CENTER);
-        image(jugador, nave.pos.x *bits, nave.pos.y*bits);
         mostrarBalas(nave.balas.getMisil());
+        imageMode(CENTER);
+        image(jugador, nave.pos.x *bits, nave.pos.y*bits,9*bits,9*bits);
     }
 
     private void mostrarBalas(ArrayList<PVector> particulas) {
