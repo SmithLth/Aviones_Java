@@ -1,19 +1,18 @@
 import java.util.ArrayList;
-
 import processing.core.*;
 
 public class Procesos extends PApplet {
-    private int bits = 5;
+    private static int bits = 5;
     private int x = 0;
     private boolean game = false;
-    public static int ancho = 560;
-    public static int alto = 700;
-    Nave nave = new Nave(ancho / 2, alto / 2, 1);
+    public static int ancho = 560/bits;
+    public static int alto = 700/bits;
+    Nave nave = new Nave(ancho / 2, alto / 2, -1);
     PImage fondo, corazon, welcomescreen, bala, start, logo, jugador;
 
     @Override
     public void settings() {
-        size(ancho, alto); // (ancho,alto) de la ventana
+        size(ancho*bits, alto*bits); // (ancho,alto) de la ventana
     }
 
     @Override
@@ -26,7 +25,7 @@ public class Procesos extends PApplet {
         bala = loadImage("/img/bala.png");
         start = loadImage("/img/start.png");
         welcomescreen = loadImage("/img/welcome.jpg");
-        frameRate(alto / bits);
+        frameRate(alto);
     }
 
     @Override
@@ -39,12 +38,13 @@ public class Procesos extends PApplet {
             textSize(15);
             text("Score :" + 0, 5, 15);
             mostrarNave();
+            nave.actualizacion();
         }
     }
 
     private void vidas() {
         for (int i = 1; i <= 10; i++) {
-            image(corazon, (25) * i, alto - 25, 20, 20);
+            image(corazon, (25) * i, height - 25, 20, 20);
         }
     }
 
@@ -60,9 +60,8 @@ public class Procesos extends PApplet {
 
     private void mostrarNave() {
         imageMode(CENTER);
-        image(jugador, nave.pos.x, nave.pos.y);
-        mostrarBalas(nave.getBalas());
-        nave.actualizacion();
+        image(jugador, nave.pos.x *bits, nave.pos.y*bits);
+        mostrarBalas(nave.balas.getMisil());
     }
 
     private void mostrarBalas(ArrayList<PVector> particulas) {
@@ -75,14 +74,14 @@ public class Procesos extends PApplet {
     private void estadoIncio() {
         controlStart();
         imageMode(CENTER);
-        image(welcomescreen, ancho / 2, alto / 2);
-        image(logo, ancho / 2, alto / 2 - 150);
-        image(start, ancho / 2, alto / 2, 200, 100);
+        image(welcomescreen, width / 2, height / 2);
+        image(logo, width / 2, height / 2 - 150);
+        image(start, width / 2, height / 2, 200, 100);
 
     }
 
     public void controlStart() {
-        if (mouseX >= ancho / 2 - 95 && mouseX <= ancho / 2 + 95 && mouseY >= alto / 2 - 45 && mouseY <= alto / 2 + 45
+        if (mouseX >= width / 2 - 95 && mouseX <= width / 2 + 95 && mouseY >= height / 2 - 45 && mouseY <= height / 2 + 45
                 && mousePressed) {
             game = true;
         }

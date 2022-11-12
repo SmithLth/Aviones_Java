@@ -1,10 +1,8 @@
-import java.util.ArrayList;
-
 import processing.core.*;
 
 public class Nave {
     protected PVector pos;
-    protected Bala balas;
+    public Bala balas;
 
     public Nave(float posx, float posy, int orientacion) { // orientaciont = 1 es enemigo orientacion=-1 nave
         pos = new PVector(posx, posy);
@@ -15,12 +13,9 @@ public class Nave {
         balas.disparar(pos);
     }
 
-    public ArrayList<PVector> getBalas(){
-        return balas.balas;
-    }
-
     public void actualizacion() {
         balas.moverBala();
+        //System.out.println(balas.balas.size());
     }
 
     public void mover(String direccion) {
