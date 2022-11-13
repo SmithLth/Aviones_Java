@@ -2,11 +2,13 @@ import processing.core.*;
 import java.util.ArrayList;
 
 public class Bala {
-    private ArrayList<PVector> balas = new ArrayList<>();
+    public ArrayList<PVector> balas;
     private int orientacion;
     private boolean disparo = false;
+    
 
     public Bala(int orientacion) {
+        balas = new ArrayList<>();
         this.orientacion = orientacion;
     }
 
@@ -14,8 +16,6 @@ public class Bala {
         PVector nuevaBala = new PVector(posccion.x-1, posccion.y+orientacion);
         balas.add(nuevaBala);
         disparo = true;
-        System.out.println("disparoooo " + balas.size());
-        System.out.println(posccion.x + " " + posccion.y);
     }
 
     public void moverBala() {

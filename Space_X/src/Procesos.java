@@ -5,8 +5,9 @@ public class Procesos extends PApplet {
     private int bits = Mapa.bits;
     private int x = 0;
     private boolean game = false;
-    Nave nave = new Nave(Mapa.ancho / 2, Mapa.alto / 2, -1);
+    Jugador nave = new Jugador();
     PImage fondo, corazon, welcomescreen, bala, start, logo, jugador;
+    ArrayList<Enemigo> enemigos = new ArrayList<>();
 
     @Override
     public void settings() {
@@ -15,6 +16,9 @@ public class Procesos extends PApplet {
 
     @Override
     public void setup() {
+        for (int i = 2; i < 12; i++) {
+            enemigos.add(new Enemigo());
+        }
         background(0);
         fondo = loadImageIO("/img/fondo.jpg");
         jugador = loadImage("/img/player.png");
@@ -57,10 +61,22 @@ public class Procesos extends PApplet {
     }
 
     private void mostrarNave() {
+        mostrarEnemigos();
         mostrarBalas(nave.balas.getMisil());
         imageMode(CENTER);
         image(jugador, nave.pos.x *bits, nave.pos.y*bits,9*bits,9*bits);
     }
+
+    private void mostrarEnemigos() {
+        for (int i = 0; i < enemigos.size(); i++) {
+            nave.choques(enemigos.get(i));
+            mostrarBalas(enemigos.get(i).balas.getMisil());
+            imageMode(CENTER);
+            image(jugador, enemigos.get(i).pos.x *bits, enemigos.get(i).pos.y*bits,9*bits,9*bits);
+        }
+    }
+
+
 
     private void mostrarBalas(ArrayList<PVector> particulas) {
         fill(200, 200, 200);
