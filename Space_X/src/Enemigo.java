@@ -108,10 +108,7 @@ public class Enemigo extends Nave {
     }
 
     public void revivir(){
-        int x = (int) (Math.random()*(Mapa.ancho-9)+1); 
-        int y = 0;
-        PVector nuevaPos = new PVector(x,y);
-        pos = nuevaPos;
+        pos = new PVector((int) (Math.random()*(Mapa.ancho-9)+1),-20);
         forma();
     }
 }
