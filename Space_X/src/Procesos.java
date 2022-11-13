@@ -2,122 +2,115 @@ import java.util.ArrayList;
 import processing.core.*;
 
 public class Procesos extends PApplet {
-    private int bits = Mapa.bits;
+    private int alto = Mapa.alto * 5;
+    private int ancho = Mapa.ancho * 5;
+    private int bits = 5;
     private int x = 0;
     private boolean game = false;
-    Jugador nave = new Jugador();
-    PImage fondo, corazon, welcomescreen, bala, start, logo, jugador;
-    ArrayList<Enemigo> enemigos = new ArrayList<>();
+    PImage fondo, corazon, welcomescreen, bala, start,logo;
+
+    Colisiones todo = new Colisiones();
 
     @Override
     public void settings() {
-        size(Mapa.ancho*bits, Mapa.alto*bits); // (ancho,alto) de la ventana
+        size(ancho, alto); // (ancho,alto) de la ventana
     }
 
     @Override
     public void setup() {
-        for (int i = 2; i < 12; i++) {
-            enemigos.add(new Enemigo());
-        }
         background(0);
         fondo = loadImageIO("/img/fondo.jpg");
-        jugador = loadImage("/img/player.png");
         logo = loadImage("/img/logo.png");
         corazon = loadImage("/img/corazon.png");
         bala = loadImage("/img/bala.png");
         start = loadImage("/img/start.png");
         welcomescreen = loadImage("/img/welcome.jpg");
-        frameRate(Mapa.alto);
+        frameRate(alto / bits);
     }
 
     @Override
     public void draw() {
-        if (!game) {
-            estadoIncio();
+        if (!game || todo.nave.vida<=0) {
+            controlStart();
+            imageMode(CENTER);
+            image(welcomescreen, ancho / 2, alto / 2);
+            image(logo,ancho/2,alto/2-150);
+            image(start,ancho/2,alto/2, 200,100);
         } else {
-            cargarFondo();
+            imageMode(CORNER);
+            image(fondo, 0, x);
+            image(fondo, 0, x - fondo.width);
+            x += 2;
+            if (x == 560)
+                x = 0;
+            todo();
             vidas();
+            balas();
             textSize(15);
-            text("Score :" + 0, 5, 15);
-            mostrarNave();
-            nave.actualizacion();
+            text("Score :" + todo.puntos, 5, 15);
         }
     }
 
     private void vidas() {
-        for (int i = 1; i <= 10; i++) {
-            image(corazon, (25) * i, height - 25, 20, 20);
+        for (int i = 1; i <= todo.nave.vida; i++) {
+            image(corazon, (25) * i, alto - 25, 20, 20);
         }
     }
 
-    private void cargarFondo() {
-        imageMode(CORNER);
-        image(fondo, 0, x);
-        image(fondo, 0, x - fondo.width);
-        x += 2;
-        if (x == 560) {
-            x = 0;
+    private void balas() {
+        for (int i = 1; i <= todo.nave.balas; i++) {
+            image(bala, ancho / 2 + (10) * i, alto - 25, 20, 20);
         }
     }
 
-    private void mostrarNave() {
-        mostrarEnemigos();
-        mostrarBalas(nave.balas.getMisil());
-        imageMode(CENTER);
-        image(jugador, nave.pos.x *bits, nave.pos.y*bits,9*bits,9*bits);
-    }
-
-    private void mostrarEnemigos() {
-        for (int i = 0; i < enemigos.size(); i++) {
-            nave.choques(enemigos.get(i));
-            mostrarBalas(enemigos.get(i).balas.getMisil());
-            imageMode(CENTER);
-            image(jugador, enemigos.get(i).pos.x *bits, enemigos.get(i).pos.y*bits,9*bits,9*bits);
+    public void todo() {
+        todo.procesos();
+        mostrar(todo.nave);
+        todo.nave.moverBala(0);
+        for (int i = 0; i < todo.enemigos.size(); i++) {
+            mostrar(todo.enemigos.get(i));
+            todo.enemigos.get(i).autoMovimiento(10 - (int) todo.puntos / 10);// velocidad de los aviones
         }
-    }
-
-
-
-    private void mostrarBalas(ArrayList<PVector> particulas) {
-        fill(200, 200, 200);
-        for (int i = 0; i < particulas.size(); i++) {
-            rect(particulas.get(i).x * bits, particulas.get(i).y * bits, bits, bits);
-        }
-    }
-
-    private void estadoIncio() {
-        controlStart();
-        imageMode(CENTER);
-        image(welcomescreen, width / 2, height / 2);
-        image(logo, width / 2, height / 2 - 150);
-        image(start, width / 2, height / 2, 200, 100);
-
     }
 
     public void controlStart() {
-        if (mouseX >= width / 2 - 95 && mouseX <= width / 2 + 95 && mouseY >= height / 2 - 45 && mouseY <= height / 2 + 45
-                && mousePressed) {
+        if (mouseX >= ancho / 2 - 95 && mouseX <= ancho / 2 + 95 && mouseY >= alto / 2 - 45 && mouseY <= alto / 2 + 45 && mousePressed) {
             game = true;
+            todo = new Colisiones();
+        }
+    }
+
+    private void mostrar(Nave objeto) {
+        fill(200, 200, 200);
+        drawNaves(objeto.ship);
+        if (objeto.missil.bala) {
+            fill(100, 200, 200);
+            drawNaves(objeto.missil.getMisil());
+        }
+    }
+
+    private void drawNaves(ArrayList<PVector> objeto) {
+        for (int i = 0; i < objeto.size(); i++) {
+            rect(objeto.get(i).x * bits, objeto.get(i).y * bits, bits, bits);
         }
     }
 
     @Override
     public void keyPressed() {
-        if (key == 'w' || keyCode == UP) {
-            nave.mover("w");
-        }
-        if (key == 's' || keyCode == DOWN) {
-            nave.mover("s");
-        }
-        if (key == 'a' || keyCode == LEFT) {
-            nave.mover("a");
-        }
-        if (key == 'd' || keyCode == RIGHT) {
-            nave.mover("d");
-        }
-        if (key == ' ') {
-            nave.disparar();
+            if (key == 'w' || keyCode == UP) {
+                todo.nave.mover("w");
+            }
+            if (key == 's' || keyCode == DOWN) {
+                todo.nave.mover("s");
+            }
+            if (key == 'a' || keyCode == LEFT) {
+                todo.nave.mover("a");
+            }
+            if (key == 'd' || keyCode == RIGHT) {
+                todo.nave.mover("d");
+            }
+            if (key == ' ') {
+            todo.nave.disparar();
         }
     }
-
 }

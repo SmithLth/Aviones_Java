@@ -1,27 +1,43 @@
-import java.util.ArrayList;
 import processing.core.*;
+import java.util.ArrayList;
 
-public abstract class Nave {
-    protected PVector pos;
-    protected ArrayList<PVector> nave = new ArrayList<>();
-    protected Bala balas;
+public abstract class Nave extends Mapa{
+    protected Misil missil;
+    public boolean activo = true;
+    public ArrayList<PVector> ship = new ArrayList<>();
+    public PVector pos;
+    protected int cons,pico;
 
-    public Nave(float posx, float posy, int orientacion) {
-        balas = new Bala(orientacion);
-        pos = new PVector(posx, posy);
+    public Nave(int posx,int posy, int cons) { // const = 1 es enemigo cons=-1 nave
+        super();
+        this.pos = new PVector(posx, posy);
+        this.cons = cons;
+        missil = new Misil(cons);
         forma();
     }
 
-    public void disparar() {
-        balas.disparar(pos);
+    protected PVector getPico(){
+        return ship.get(pico());
     }
 
-    public void actualizacion() {
-        balas.moverBala();
+    public void crear(int [][] forma) {
+        ship.clear();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (forma[j][i]==1) {
+                    PVector nuevo = new PVector(i+pos.x,j+pos.y);
+                    ship.add(nuevo);
+                }
+            }
+        }
+    }
+
+    public int pico(){
+        return 6;
     }
 
     public void mover(String direccion) {
-        if (verificarMovimiento()) {
+        if (verificarMovimiento(direccion)) {
             if (direccion == "d") {
                 pos.x = pos.x + 1;
             } else if (direccion == "a") {
@@ -35,20 +51,28 @@ public abstract class Nave {
         }
     }
 
-    public abstract boolean verificarMovimiento();
+    public abstract boolean verificarMovimiento(String direccion);
 
-    public void llenarForma(int [][] forma) {
-        nave.clear();
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (forma[i][j]==1) {
-                    PVector nuevo = new PVector(i+pos.x,j+pos.y);
-                    nave.add(nuevo);
-                }
-            }
+    abstract public void forma();
+
+    protected ArrayList<PVector> getBala(){
+        return missil.getMisil();
+    }
+
+    protected void eliminarNave(){
+        ship.clear();
+        activo=false;
+    }
+
+    protected void eliminarMisil(PVector misil){
+        missil.getMisil().remove(misil);
+    }
+
+    protected void disparar(){
+        if (activo) {
+            missil.disparar(getPico());
         }
     }
 
-    public abstract void forma();
-
+    abstract public void moverBala(int velocidad);
 }

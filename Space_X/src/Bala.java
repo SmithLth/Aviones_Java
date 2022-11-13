@@ -13,7 +13,7 @@ public class Bala {
     }
 
     public void disparar(PVector posccion) {
-        PVector nuevaBala = new PVector(posccion.x-1, posccion.y+orientacion);
+        PVector nuevaBala = new PVector(posccion.x+5, posccion.y+orientacion);
         balas.add(nuevaBala);
         disparo = true;
     }

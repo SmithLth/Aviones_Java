@@ -1,7 +1,4 @@
-
 public class Mapa {
-    public static int bits = 5;
-    public static int ancho = 560 / bits;
-    public static int alto = 700 / bits;
-
+    static public int alto = 700 / 5;
+    static public int ancho = 560 / 5;
 }
