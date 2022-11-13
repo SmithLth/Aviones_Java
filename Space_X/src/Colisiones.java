@@ -1,11 +1,8 @@
 import java.util.ArrayList;
 
-public class Colisiones{
-    private int control = 1;
-    public int puntos = 0;
-    private int velocidad = 0;
-    ArrayList<Enemigo> enemigos = new ArrayList<>();
-    Mapa mapa = new Mapa();
+public class Colisiones {
+    private int control = 1, velocidad = 0;
+    public ArrayList<Enemigo> enemigos = new ArrayList<>();
     public Jugador nave = new Jugador(Mapa.ancho / 2, Mapa.alto - 10);
 
     public void procesos() {
@@ -13,7 +10,7 @@ public class Colisiones{
         for (int i = 0; i < enemigos.size(); i++) {
             nave.choques(enemigos.get(i));
         }
-        if (velocidad == 200){
+        if (velocidad == 200) {
             nave.recargar();
             control++;
             velocidad = 0;
@@ -24,7 +21,7 @@ public class Colisiones{
 
     public void crearEnemigos() {
         while (enemigos.size() < control) {
-            enemigos.add(new Enemigo(0, 0));
+            enemigos.add(new Enemigo());
             if (control > Math.random() * (10) + 1) {
                 control = 0;
             }

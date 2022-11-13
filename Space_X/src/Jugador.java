@@ -1,5 +1,5 @@
 public class Jugador extends Nave {
-    public int balas = 20, vida = 10;
+    public int balas = 20, vida = 10, puntos = 0;
 
     public Jugador(int posx, int posy) { // const = 1 es enemigo cons=-1 nave
         super(posx, posy, -1);
@@ -62,6 +62,7 @@ public class Jugador extends Nave {
                     if (missil.missil.get(j).equals(enemigo.missil.missil.get(i))) {
                         enemigo.missil.missil.remove(i);
                         missil.missil.remove(j);
+                        puntos++;
                     }
                 }
             }
@@ -71,6 +72,7 @@ public class Jugador extends Nave {
             for (int j = 0; j < ship.size(); j++) {
                 if (ship.get(j).equals(enemigo.ship.get(i))) {
                     enemigo.revivir();
+                    puntos++;
                     vida--;
                 }
             }
@@ -80,6 +82,7 @@ public class Jugador extends Nave {
             for (int j = 0; j < missil.missil.size(); j++) {
                 if (missil.missil.get(j).equals(enemigo.ship.get(i))) {
                     enemigo.revivir();
+                    puntos++;
                     missil.missil.remove(j);
                 }
             }

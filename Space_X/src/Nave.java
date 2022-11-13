@@ -1,14 +1,14 @@
 import processing.core.*;
 import java.util.ArrayList;
 
-public abstract class Nave extends Mapa{
+public abstract class Nave extends Mapa {
     protected Misil missil;
     public boolean activo = true;
     public ArrayList<PVector> ship = new ArrayList<>();
-    public PVector pos;
-    protected int cons,pico;
+    protected PVector pos;
+    protected int cons, pico;
 
-    public Nave(int posx,int posy, int cons) { // const = 1 es enemigo cons=-1 nave
+    public Nave(int posx, int posy, int cons) { // const = 1 es enemigo cons=-1 nave
         super();
         this.pos = new PVector(posx, posy);
         this.cons = cons;
@@ -16,24 +16,20 @@ public abstract class Nave extends Mapa{
         forma();
     }
 
-    protected PVector getPico(){
-        return ship.get(pico());
+    protected PVector getPico() {
+        return ship.get(6);
     }
 
-    public void crear(int [][] forma) {
+    public void crear(int[][] forma) {
         ship.clear();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (forma[j][i]==1) {
-                    PVector nuevo = new PVector(i+pos.x,j+pos.y);
+                if (forma[j][i] == 1) {
+                    PVector nuevo = new PVector(i + pos.x, j + pos.y);
                     ship.add(nuevo);
                 }
             }
         }
-    }
-
-    public int pico(){
-        return 6;
     }
 
     public void mover(String direccion) {
@@ -51,28 +47,15 @@ public abstract class Nave extends Mapa{
         }
     }
 
-    public abstract boolean verificarMovimiento(String direccion);
-
-    abstract public void forma();
-
-    protected ArrayList<PVector> getBala(){
-        return missil.getMisil();
-    }
-
-    protected void eliminarNave(){
-        ship.clear();
-        activo=false;
-    }
-
-    protected void eliminarMisil(PVector misil){
-        missil.getMisil().remove(misil);
-    }
-
-    protected void disparar(){
+    protected void disparar() {
         if (activo) {
             missil.disparar(getPico());
         }
     }
 
-    abstract public void moverBala(int velocidad);
+    public abstract boolean verificarMovimiento(String direccion);
+
+    public abstract void forma();
+
+    public abstract void moverBala(int velocidad);
 }
