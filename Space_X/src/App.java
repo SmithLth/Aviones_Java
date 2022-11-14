@@ -6,9 +6,8 @@ public class App extends PApplet {
         PApplet.main(new String[] { App.class.getName() });
     }
 
-    private int bits = 5, x = 0;
-    private boolean game = false;
-    PImage fondo, corazon, welcomescreen, bala, start, logo;
+    private int bits = 5, x = 0, game = 0;
+    PImage fondo, corazon, welcomescreen, bala, start, logo, gameOver;
     Colisiones todo = new Colisiones();
 
     @Override
@@ -23,19 +22,21 @@ public class App extends PApplet {
         corazon = loadImage("/img/corazon.png");
         bala = loadImage("/img/bala.png");
         start = loadImage("/img/start.png");
+        gameOver = loadImage("/img/gameOver.png");
         welcomescreen = loadImage("/img/welcome.jpg");
         frameRate(height / bits);
     }
 
     @Override
     public void draw() {
-        if (!game || todo.nave.vida <= 0) {
+        controlGame();
+        if (game == 0 ) {
             controlStart();
             imageMode(CENTER);
             image(welcomescreen, width / 2, height / 2);
             image(logo, width / 2, height / 2 - 150);
             image(start, width / 2, height / 2, 200, 100);
-        } else {
+        } else if(game == 1){
             imageMode(CORNER);
             image(fondo, 0, x);
             image(fondo, 0, x - fondo.width);
@@ -47,6 +48,13 @@ public class App extends PApplet {
             balas();
             textSize(15);
             text("Score :" + todo.nave.puntos, 5, 15);
+        }else if(game == 2){
+            imageMode(CENTER);
+            image(gameOver, width / 2, height / 2, 200, 100);
+        }else if(game == 3){
+
+        }else if(game == 4){
+
         }
     }
 
@@ -76,8 +84,14 @@ public class App extends PApplet {
         if (mouseX >= width / 2 - 95 && mouseX <= width / 2 + 95 && mouseY >= height / 2 - 45
                 && mouseY <= height / 2 + 45
                 && mousePressed) {
-            game = true;
+            game = 1;
             todo = new Colisiones();
+        }
+    }
+
+    public void controlGame(){
+        if(todo.nave.vida == 0){
+            game = 2;
         }
     }
 
