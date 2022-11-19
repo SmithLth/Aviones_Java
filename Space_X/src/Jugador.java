@@ -1,25 +1,13 @@
+import java.util.ArrayList;
+
+import processing.core.PVector;
+
 public class Jugador extends Nave {
     public int balas = 20, vida = 10, puntos = 0;
+    public boolean mover = false;
 
-    public Jugador(int posx, int posy) { // const = 1 es enemigo cons=-1 nave
-        super(posx, posy, -1);
-    }
-
-    @Override
-    public void forma() {
-        ship.clear();
-        int[][] forma = {
-                { 0, 0, 0, 0, 1, 0, 0, 0, 0 },
-                { 0, 0, 0, 1, 1, 1, 0, 0, 0 },
-                { 0, 0, 1, 0, 1, 0, 1, 0, 0 },
-                { 0, 1, 0, 0, 1, 0, 0, 1, 0 },
-                { 1, 0, 0, 0, 1, 0, 0, 0, 1 },
-                { 1, 0, 0, 0, 1, 0, 0, 0, 1 },
-                { 1, 0, 0, 0, 1, 0, 0, 0, 1 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        };
-        crear(forma);
+    public Jugador(int posx, int posy, int forma[][], int formaM[][]) { // const = 1 es enemigo cons=-1 nave
+        super(posx, posy, -1, forma, formaM);
     }
 
     @Override
@@ -36,6 +24,10 @@ public class Jugador extends Nave {
         return false;
     }
 
+    public void movimiento() {
+        if (mover) mover(direccion);
+    }
+
     @Override
     public void moverBala(int velocidad) {
         missil.moverBala();
@@ -43,8 +35,8 @@ public class Jugador extends Nave {
 
     @Override
     public void disparar() {
-        if (activo && balas > 0) {
-            missil.disparar(getPico());
+        if (balas > 0) {
+            missil.disparar(ship.get((forma.length) / 2));
             balas--;
         }
     }
@@ -55,47 +47,53 @@ public class Jugador extends Nave {
         }
     }
 
-    public void choques(Enemigo enemigo) {
-        for (int i = 0; i < enemigo.missil.missil.size(); i++) {
-            for (int j = 0; j < missil.missil.size(); j++) {
-                if (missil.bala && enemigo.missil.bala) {
-                    if (missil.missil.get(j).equals(enemigo.missil.missil.get(i))) {
-                        enemigo.missil.missil.remove(i);
-                        missil.missil.remove(j);
-                        puntos++;
-                    }
-                }
+    public void choques(ArrayList<Enemigo> enemigos) {
+        for (int i = 0; i < enemigos.size(); i++) {
+            int res = choques(enemigos.get(i));
+            if (res > 0) {
+                i = 0;
             }
         }
+    }
 
-        for (int i = 0; i < enemigo.ship.size(); i++) {
-            for (int j = 0; j < ship.size(); j++) {
-                if (ship.get(j).equals(enemigo.ship.get(i))) {
-                    enemigo.revivir();
-                    puntos++;
-                    vida--;
+    private int choques(Enemigo enemigo) {
+        int res = 0;
+        if (chocan(missil.missil, enemigo.missil.missil)) {
+            res = res + 1;
+            System.out.println("Misil con misil");
+            puntos++;
+        }
+        if (chocan(ship, enemigo.ship)) {
+            enemigo.revivir();
+            System.out.println("Enemigo con enemigo");
+            res = res + 1;
+            puntos++;
+            vida--;
+        }
+        if (chocan(enemigo.ship, missil.missil)) {
+            res = res + 1;
+            enemigo.revivir();
+            System.out.println("enemigo con misil");
+            puntos++;
+        }
+        if (chocan(ship, enemigo.missil.missil)) {
+            res = res + 1;
+            System.out.println("yo con misil");
+            vida--;
+        }
+        return res;
+    }
+
+    private boolean chocan(ArrayList<PVector> objeto1, ArrayList<PVector> objeto2) {
+        for (int i = 0; i < objeto1.size(); i++) {
+            for (int j = 0; j < objeto2.size(); j++) {
+                if (objeto1.get(i).equals(objeto2.get(j))) {
+                    objeto2.remove(j);
+                    return true;
                 }
+
             }
         }
-
-        for (int i = 0; i < enemigo.ship.size(); i++) {
-            for (int j = 0; j < missil.missil.size(); j++) {
-                if (missil.missil.get(j).equals(enemigo.ship.get(i))) {
-                    enemigo.revivir();
-                    puntos++;
-                    missil.missil.remove(j);
-                }
-            }
-        }
-
-        for (int i = 0; i < ship.size(); i++) {
-            for (int j = 0; j < enemigo.missil.missil.size(); j++) {
-                if (ship.get(i).equals(enemigo.missil.missil.get(j))) {
-                    vida--;
-                    enemigo.missil.missil.remove(j);
-                }
-
-            }
-        }
+        return false;
     }
 }

@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Mapa {
     static public int alto = 700 / 5;
     static public int ancho = 560 / 5;
+    
     static File datos = new File("datos.txt");
     public static void crearArchivo() throws IOException{
         if (!datos.exists()) {

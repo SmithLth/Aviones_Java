@@ -8,7 +8,7 @@ public class App extends PApplet {
 
     private int bits = 5, x = 0, game = 0;
     PImage fondo, corazon, welcomescreen, bala, start, logo, gameOver;
-    Colisiones todo = new Colisiones();
+    Nivel1 todo = new Nivel1(5);
 
     @Override
     public void settings() {
@@ -24,11 +24,12 @@ public class App extends PApplet {
         start = loadImage("/img/start.png");
         gameOver = loadImage("/img/gameOver.png");
         welcomescreen = loadImage("/img/welcome.jpg");
-        frameRate(height / bits);
+        frameRate(100);
     }
 
     @Override
     public void draw() {
+        todo.nave.choques(todo.enemigos);
         controlGame();
         if (game == 0 ) {
             controlStart();
@@ -76,7 +77,6 @@ public class App extends PApplet {
         todo.nave.moverBala(0);
         for (int i = 0; i < todo.enemigos.size(); i++) {
             mostrar(todo.enemigos.get(i));
-            todo.enemigos.get(i).autoMovimiento(10 - (int) todo.nave.puntos / 10);// velocidad de los aviones
         }
     }
 
@@ -85,7 +85,7 @@ public class App extends PApplet {
                 && mouseY <= height / 2 + 45
                 && mousePressed) {
             game = 1;
-            todo = new Colisiones();
+            todo = new Nivel1(5);
         }
     }
 
@@ -98,7 +98,7 @@ public class App extends PApplet {
     private void mostrar(Nave objeto) {
         fill(200, 200, 200);
         drawNaves(objeto.ship);
-        drawNaves(objeto.missil.getMisil());
+        drawNaves(objeto.missil.misiles);
     }
 
     private void drawNaves(ArrayList<PVector> objeto) {
@@ -110,22 +110,22 @@ public class App extends PApplet {
     @Override
     public void keyPressed() {
         if (key == 'w' || keyCode == UP) {
-            todo.nave.mover("w");
+            todo.nave.direccion="w";
         }
         if (key == 's' || keyCode == DOWN) {
-            todo.nave.mover("s");
+            todo.nave.direccion="s";
         }
         if (key == 'a' || keyCode == LEFT) {
-            todo.nave.mover("a");
+            todo.nave.direccion="a";
         }
         if (key == 'd' || keyCode == RIGHT) {
-            todo.nave.mover("d");
+            todo.nave.direccion="d";
         }
         if (key == ' ') {
             todo.nave.disparar();
         }
+            todo.nave.mover = true;
         final int k = keyCode;
-
         if (k == 'P'){
             if (looping){
                 noLoop();
@@ -133,5 +133,9 @@ public class App extends PApplet {
                 loop();
             }
         }
+    }
+    @Override
+    public void keyReleased(){
+        todo.nave.mover = false;
     }
 }

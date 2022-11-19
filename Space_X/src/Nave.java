@@ -1,23 +1,19 @@
 import processing.core.*;
 import java.util.ArrayList;
 
-public abstract class Nave extends Mapa {
+public abstract class Nave{
     protected Misil missil;
-    public boolean activo = true;
     public ArrayList<PVector> ship = new ArrayList<>();
     protected PVector pos;
-    protected int cons, pico;
+    protected int cons, pico,forma[][];
+    protected String direccion = "a";
 
-    public Nave(int posx, int posy, int cons) { // const = 1 es enemigo cons=-1 nave
-        super();
+    public Nave(int posx, int posy, int cons, int[][] forma,int[][] formaM) { // const = 1 es enemigo cons=-1 nave
         this.pos = new PVector(posx, posy);
         this.cons = cons;
-        missil = new Misil(cons);
-        forma();
-    }
-
-    protected PVector getPico() {
-        return ship.get(6);
+        missil = new Misil(cons,formaM);
+        this.forma = forma;
+        crear(forma);
     }
 
     public void crear(int[][] forma) {
@@ -43,19 +39,15 @@ public abstract class Nave extends Mapa {
             } else if (direccion == "s") {
                 pos.y = pos.y + 1;
             }
-            forma();
+            crear(forma);
         }
     }
 
     protected void disparar() {
-        if (activo) {
-            missil.disparar(getPico());
-        }
+        missil.disparar(ship.get((forma.length)/2));
     }
 
     public abstract boolean verificarMovimiento(String direccion);
-
-    public abstract void forma();
 
     public abstract void moverBala(int velocidad);
 }

@@ -1,13 +1,15 @@
 import processing.core.*;
 import java.util.ArrayList;
 
-public class Misil extends Mapa {
+public class Misil {
     public ArrayList<PVector> missil = new ArrayList<>();
+    public ArrayList<PVector> misiles = new ArrayList<>();
+    private int[][] forma;
     private int cons;
     protected boolean bala = false;
 
-    public Misil(int cons) {
-        super();
+    public Misil(int cons, int[][] forma) {
+        this.forma=forma;
         this.cons = cons;
     }
 
@@ -15,6 +17,21 @@ public class Misil extends Mapa {
         PVector A = new PVector(puntero.x, puntero.y);
         missil.add(A);
         bala = true;
+        crear();
+    }
+
+    public void crear() {
+        misiles.clear();
+        for (int l = 0; l < missil.size(); l++) {
+            for (int i = 0; i < forma.length; i++) {
+                for (int j = 0; j < forma.length; j++) {
+                    if (forma[j][i] == 1) {
+                        PVector nuevo = new PVector(i + missil.get(l).x, j + missil.get(l).y);
+                        misiles.add(nuevo);
+                    }
+                }
+            }
+        }
     }
 
     public void moverBala() {
@@ -29,6 +46,7 @@ public class Misil extends Mapa {
                 bala = false;
             }
         }
+        crear();
     }
 
     public ArrayList<PVector> getMisil(){
