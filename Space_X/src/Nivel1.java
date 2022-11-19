@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Nivel1 {
     private int velocidad = 0;
     public ArrayList<Enemigo> enemigos = new ArrayList<>();
-    public Jugador nave = new Jugador(Mapa.ancho / 2, Mapa.alto - 20, Forma.formaJugador, Forma.formaMisil);
+    public Jugador nave = new Jugador(Datos.ancho / 2, Datos.alto - 20, Forma.formaJugador, Forma.formaMisil);
 
     public Nivel1(int n){
         for (int i = 0; i < n; i++) {
@@ -42,7 +42,7 @@ public class Nivel1 {
         for (int i = 0; i < enemigo.ship.size(); i++) {
             if (enemigo.ship.get(i).x == 0) {
                 enemigo.direccion = "d";
-            } else if (enemigo.ship.get(i).x == Mapa.ancho - 1) {
+            } else if (enemigo.ship.get(i).x == Datos.ancho - 1) {
                 enemigo.direccion = "a";
             }
         }

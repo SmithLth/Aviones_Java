@@ -2,10 +2,8 @@ import processing.core.*;
 import java.util.ArrayList;
 
 public class Misil {
-    public ArrayList<PVector> missil = new ArrayList<>();
-    public ArrayList<PVector> misiles = new ArrayList<>();
-    private int[][] forma;
-    private int cons;
+    public ArrayList<PVector> missil = new ArrayList<>(), misiles = new ArrayList<>();
+    private int cons, forma[][];
     protected boolean bala = false;
 
     public Misil(int cons, int[][] forma) {
@@ -38,13 +36,11 @@ public class Misil {
         if (bala) {
             for (int i = 0; i < missil.size(); i++) {
                 missil.get(i).set(missil.get(i).x, missil.get(i).y + cons);
-                if (missil.get(i).y < 0 || missil.get(i).y >= Mapa.alto) {
+                if (missil.get(i).y < 0 || missil.get(i).y >= Datos.alto) {
                     missil.remove(i);
                 }
             }
-            if (missil.size() == 0) {
-                bala = false;
-            }
+            if (missil.size() == 0) bala = false;
         }
         crear();
     }

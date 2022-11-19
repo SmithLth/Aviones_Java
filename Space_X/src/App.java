@@ -12,7 +12,7 @@ public class App extends PApplet {
 
     @Override
     public void settings() {
-        size(Mapa.ancho * 5, Mapa.alto * 5); // (ancho,alto) de la ventana
+        size(Datos.ancho * 5, Datos.alto * 5); // (ancho,alto) de la ventana
     }
 
     @Override
@@ -29,7 +29,7 @@ public class App extends PApplet {
 
     @Override
     public void draw() {
-        todo.nave.choques(todo.enemigos);
+        Datos.choques(todo.enemigos,todo.nave);
         controlGame();
         if (game == 0 ) {
             controlStart();

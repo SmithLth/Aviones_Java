@@ -1,15 +1,13 @@
 import processing.core.*;
 
 public class Enemigo extends Nave {
-    public int contador = 0;
-    public int disparar = 0;
-    private int velocidadBala = 0;
+    public int contador = 0, disparar = 0, velocidadBala = 0;
 
     public Enemigo(int matriz[][],int matrizM[][]) { // const = 1 es enemigo cons=-1 nave
         super(0, 0, 1,matriz,matrizM);
         revivir();
         missil = new Misil(1,Forma.formaMisil2);
-        if (pos.x > Mapa.ancho / 2) {
+        if (pos.x > Datos.ancho / 2) {
             direccion = "d";
         }
     }
@@ -26,7 +24,7 @@ public class Enemigo extends Nave {
     @Override
     public boolean verificarMovimiento(String direccion) {
         if (direccion == "s") {
-            if (pos.y > Mapa.alto + 10) {
+            if (pos.y > Datos.alto + 10) {
                 revivir();
             }
         }
@@ -34,7 +32,7 @@ public class Enemigo extends Nave {
     }
 
     public void revivir() {
-        pos = new PVector((int) (Math.random() * (Mapa.ancho - 9) + 1), ((int) Math.random() * (-50) -20));
+        pos = new PVector((int) (Math.random() * (Datos.ancho - 9) + 1), ((int) Math.random() * (-50) -20));
         crear(forma);
     }
 }
