@@ -1,12 +1,12 @@
 import processing.core.*;
 import java.util.ArrayList;
 public abstract class Objeto {
-    ArrayList<PVector> partes = new ArrayList<>();
-    PVector posicion = new PVector ();
-
+    public ArrayList<PVector> partes = new ArrayList<>();
+    public PVector posicion = new PVector ();
     boolean eliminado;
     int [][]forma;
     int vida;
+
     public Objeto(int posx,int posy,int vida) { 
         posicion.x=posx;
         posicion.y=posy;
@@ -22,7 +22,6 @@ public abstract class Objeto {
             System.out.println("muerto");
         }
         System.out.println("impacto");
-        
     }
 
     public void crear() {

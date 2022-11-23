@@ -27,7 +27,7 @@ public class Procesos extends PApplet {
         bala = loadImage("/img/bala.png");
         start = loadImage("/img/start.png");
         welcomescreen = loadImage("/img/welcome.jpg");
-        frameRate(200);
+        frameRate(60);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Procesos extends PApplet {
  
         }
     }
-    
+
     private void controlStart() {
         if (mouseX >= ancho / 2 - 95 && mouseX <= ancho / 2 + 95 && mouseY >= alto / 2 - 45 && mouseY <= alto / 2 + 45 && mousePressed) {
             game = true;

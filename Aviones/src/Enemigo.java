@@ -3,7 +3,6 @@ public class Enemigo extends Nave {
 
     public Enemigo(int posx, int posy, int[][] forma, int vida) {
         super(posx, posy, forma, vida);
-        crear();
         d = b = true;
         if (posx < Mapa.ancho / 2) {
             i = true;
@@ -36,8 +35,8 @@ public class Enemigo extends Nave {
                     i = true;
                     d = false;
                 }
-                if (posicion.x >= Mapa.alto - 20) {
-                    posicion.y = 1;
+                if (posicion.y >= Mapa.alto - 9) {
+                   revivir();
                 }
                 timeMov = 0;
                 super.mover();
@@ -46,6 +45,4 @@ public class Enemigo extends Nave {
         }
         crear();
     }
-
-
 }

@@ -25,7 +25,7 @@ public class Nivel1 {
 
     public void autoMovimiento(Enemigo enemigo,int velocidad) {
         enemigo.moverBala(velocidad);
-        if (true) {
+        if (enemigo.contador > velocidad) {
             enemigo.mover("s");
             enemigo.mover(moverIzqDer(enemigo));
             enemigo.contador = 0;

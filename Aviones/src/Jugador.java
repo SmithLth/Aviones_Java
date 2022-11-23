@@ -1,9 +1,8 @@
 public class Jugador extends Nave {
+    public int puntos;
     private int contador;
     public Jugador (int posx,int posy,int[][] forma,int vida){
         super(posx,posy,forma,vida);
-        crear();
-        
     }    
     
     @Override

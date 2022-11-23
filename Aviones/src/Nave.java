@@ -2,11 +2,12 @@ import java.util.ArrayList;
 public abstract class Nave extends Objeto{
     public ArrayList <Objeto> misiles = new ArrayList<>();
     public boolean a,b,d,i;
-    protected int velocidad = 0;
+    protected int velocidad;
 
     public Nave(int posx,int posy,int [][]forma,int vida) { 
         super(posx,posy,vida);
         this.forma = forma;
+        crear();
     }
     
     public void mover (){
@@ -24,6 +25,14 @@ public abstract class Nave extends Objeto{
             posicion.y = posicion.y + 1;
         }
         crear();
+    }
+
+    public void revivir(){
+        int posxRandom = (int) (Math.random() * (Mapa.ancho - forma[0].length) + 1);
+        posicion.x = posxRandom;
+        posicion.y = -20;
+        eliminado = false;
+        vida++;
     }
 
     public abstract void disparar(int [][] forma);
