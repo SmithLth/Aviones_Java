@@ -5,15 +5,12 @@ public class Misil extends Objeto{
         this.forma=forma;
         vida=1;
         this.direccion = direccion;
-       crear();  
+        crear();  
     }
 
     public void mover(){
         partes.clear();
         posicion.y = posicion.y + direccion;
-        System.out.println(posicion.y);
         crear();        
     }
-    
-    
 }
