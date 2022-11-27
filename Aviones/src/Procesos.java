@@ -11,13 +11,17 @@ public class Procesos extends PApplet {
     private int ancho = 560, alto = 700, bits = 5;
     private int estadoGame;
     Mapa mapa = new Mapa(bits,ancho,alto);
-    
-    PImage fondo, corazon, welcomescreen, bala, start,logo,gameOver;
+    //menu
+    PImage fondo, welcomescreen, start,logo,boton,lCreditos,lRecords,astro,cohete;
     /// reconds
-    PImage cintillo, copa1, copa2, copa3 , goat, puntajes;
+    PImage cintillo, copa1, copa2, copa3 , goat, puntajes,atras;
     PFont font2;
     // nave 
     PImage jugador1,jugador2,jugador3;
+    //game Over
+    PImage alien, alienCon, luna, tierra,gameOver,resNo,resSi;
+    //records
+
     
     private int scroll;
     private ArrayList<DatoJugador> tablaPuntajes = new ArrayList<>();
@@ -37,14 +41,24 @@ public class Procesos extends PApplet {
         background(0);
         //menuInicio
         fondo = loadImage("/img/fondo.jpg");
-        logo = loadImage("/img/espace.png");
-        corazon = loadImage("/img/corazon.png");
-        start = loadImage("/img/start.png");
-        welcomescreen = loadImage("/img/welcome.jpg");
+        logo = loadImage("/img/space.png");
+        start = loadImage("/img/star2.png");
+        welcomescreen = loadImage("/img/fondo4-02.png");
+        boton= loadImage("/img/boton.png");
+        lCreditos = loadImage("/img/creditos.png");
+        lRecords= loadImage("/img/records.png");
+        astro= loadImage("/img/astro.png");
+        cohete= loadImage("/img/cohetee.png");
         //navesJugador
         jugador1= loadImage("/img/jugador2.png");
         //menuGameOver        
-        gameOver = loadImage("/img/gameOver.png");
+        gameOver = loadImage("/img/gameOver2.png");
+        alien = loadImage("/img/alien.png");
+        alienCon = loadImage("/img/gameOverA.png");
+        luna=loadImage("/img/luna.png");
+        tierra=loadImage("/img/tierra.png");
+        resNo=loadImage("/img/no.png");
+        resSi=loadImage("/img/si.png");
         //menuRecords
         cintillo = loadImage("/img/cinta.png");
         copa1=loadImage("/img/1ro.png");
@@ -53,6 +67,7 @@ public class Procesos extends PApplet {
         goat= loadImage("/img/goat.png");
         puntajes=loadImage("/img/puntajes.png");
         font2 = createFont("Rockwell", 32);
+        atras=loadImage("/img/atras.png");
         
         
         frameRate(110);
@@ -94,17 +109,35 @@ public class Procesos extends PApplet {
 
     public void menuInicio(){
         imageMode(CENTER);
-        image(welcomescreen, ancho / 2, alto / 2);
+        
+        image(welcomescreen, ancho / 2, alto / 2,ancho,alto);
+        image(astro, 130, alto-150,370,380);
+        image(cohete, ancho *3/4+40, alto-150,310,300);
         image(logo,ancho/2,alto/2-150,400,100);
-        image(start,ancho/2,alto/2, 200,100);    
+        image(boton, ancho/2,alto/2+20,200,120 );  
+        image(start,ancho/2,alto/2+10, 150,50);    
         imageMode(CORNER);
-        image(start, ancho *3/4, alto - 100 ,200, 100);
-        image(start, 0, alto - 100 ,200, 100);    
+        
+        image(boton, 30, alto - 100,140,70 );   
+        image(lCreditos, 65, alto - 80,80,20 ); 
+
+        image(boton, ancho *3/4-30, alto - 100 ,140,70);
+        image(lRecords,  ancho *3/4, alto - 80,80,20 );  
     }
     
     public void gameOver(){
-        imageMode(CENTER);
-        image(gameOver, width / 2, height / 2, 200, 100);
+        imageMode(CORNER);
+        image(welcomescreen, 0, 0);
+        image(luna,ancho-180,30,160,160);
+        image(alienCon, 110, alto/2-40,280,140);
+
+        image(gameOver,30,10,320,200);
+        imageMode(CORNER);
+        image(tierra,-50,alto-160,350,370);
+        image(alien, 5, alto/2+40, 240, 260);
+        
+        image(resSi, ancho *3/4-15, alto - 200,140,100 );  
+        image(resNo, ancho *3/4-15, alto - 100,140,100 );  
     }
     
     
@@ -128,10 +161,12 @@ public class Procesos extends PApplet {
     
     public void estadoRecords(){
         imageMode(CORNER);
-        image(fondo, 0, 0);
+        image(welcomescreen, 0, 0);
         //botones
-        image(start, ancho *3/4, alto - 100 ,200, 100);
-        image(start, 0, alto - 100 ,200, 100);
+        
+        image(boton, 30, alto - 100,140,70 );   
+        image(atras, 75, alto - 95,40,50 ); 
+        image(boton, ancho *3/4-30, alto - 100 ,140,70);
         //titulo copas
         imageMode(CENTER);
         image(puntajes,ancho/2,20,150,10);
@@ -159,26 +194,38 @@ public class Procesos extends PApplet {
     }
 
     private void controlGame() {
-        if (mouseX >= ancho / 2 - 95 && mouseX <= ancho / 2 + 95 
+        if (mouseX >= ancho / 2 - 95 && mouseX <= ancho / 2 + 95  // de menu a juego
             && mouseY >= alto / 2 - 45 && mouseY <= alto / 2 + 45
                 && mousePressed && estadoGame==0) {
+            mapa = new Mapa(bits,ancho,alto);
             estadoGame = 1;
         }
-        if (mouseX >= ancho * 3/ 4  && mouseX <= ancho   
+        if (mouseX >= ancho * 3/ 4  && mouseX <= ancho    // de menu a record
             && mouseY >= alto - 100 && mouseY <= alto 
                 &&( mousePressed && estadoGame==0 )) {
             estadoGame=3;
             mousePressed=false;
-        }else if (mouseX >= ancho * 3/ 4  && mouseX <= ancho   
+        }else if (mouseX >= ancho * 3/ 4  && mouseX <= ancho    //de record a juego
             && mouseY >= alto - 100 && mouseY <= alto 
                 && (mousePressed && estadoGame==3)) {
-            mapa = new Mapa(bits,ancho,alto);
-            estadoGame = 1;
+                    mapa = new Mapa(bits,ancho,alto);
+                    estadoGame = 1;
         }
-        if (mouseX >=0  && mouseX <= ancho/4
+        if (mouseX >=0  && mouseX <= ancho/4 // de record a menu
             && mouseY >= alto - 100 && mouseY <= alto 
                 && mousePressed && estadoGame==3) {
             estadoGame = 0;
+        }
+        if (mouseX >= ancho * 3/ 4 -15  && mouseX <= ancho   // de game over a menu
+            && mouseY >= alto - 100 && mouseY <= alto 
+                && (mousePressed && estadoGame==2)) {
+            estadoGame = 0;
+        }
+        else if (mouseX >= ancho * 3/ 4 -15  && mouseX <= ancho   // de game over a juego
+            && mouseY >= alto - 200 && mouseY <= alto-120 
+                && (mousePressed && estadoGame==2)) {
+                    mapa = new Mapa(bits,ancho,alto);
+                    estadoGame = 1;
         }
         
 
