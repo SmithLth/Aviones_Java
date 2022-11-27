@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import processing.core.*;
 public class Atributo extends Objeto{
     public int tipoAtributo ;
     public int contador=0;
@@ -10,39 +8,39 @@ public class Atributo extends Objeto{
         tipoAtributo=atributo;
         crear();  
     }
+    
+    @Override
     public void mover(){
         if(contador>=50){
             partes.clear();
             posicion.y = posicion.y + 1;
             contador=0;
         }
-        if(Mapa.jugador.formaMisil != Forma.getFormaMisil()){
-            if(contador2>=1000){
-                Mapa.jugador.formaMisil=Forma.getFormaMisil(); 
-                contador2=0;
-            }
-            contador2++;
-        }
         contador++;
         crear();         
     }
 
-    public void darAtributos(){
+    public void darAtributos(Nave jugador){
         posicion.x = 1;
         posicion.y = -1;
         if(tipoAtributo==0){
-            Mapa.jugador.vida= Mapa.jugador.vida+10;   
+            jugador.vida= jugador.vida+10;   
         }   
         if(tipoAtributo==1){
-            Mapa.jugador.formaMisil=Forma.formaMisil3;
+            jugador.formaMisil=Forma.formaMisil3;
         } 
-        // if(tipoAtributo==2){
-            // Mapa.jugador.formaMisil=Forma.getFormaMisil();
-        // } 
         if(tipoAtributo==2){
-            Mapa.jugador.formaMisil=Forma.formaAste;
+            jugador.formaMisil=Forma.formaAste;
         } 
     }
     
-    
+    public void temporizadorAtributo(Nave jugador){
+        if(jugador.formaMisil != Forma.getFormaMisil()){
+            if(contador2>=1000){
+                jugador.formaMisil=Forma.getFormaMisil(); 
+                contador2=0;
+            }
+            contador2++;
+        }
+    }
 }

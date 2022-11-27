@@ -7,40 +7,32 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 
 public class DataBase {
-    public static void guardar(ArrayList<DatoJugador> datos) throws IOException{
-        File directorio = new File(".");
-        File archivo = new File(directorio,"datosPuntajes.txt");
-        
+    static File archivo = new File("datosPuntajes.txt");
+
+    public static void guardar(ArrayList<DatoJugador> datos) throws IOException {
         FileWriter escritorAlarchivo = new FileWriter(archivo);
-        BufferedWriter escritor = new BufferedWriter (escritorAlarchivo);
-        
-        for(DatoJugador dato : datos){
-            escritor.write(dato.nombre+"$"+dato.puntaje+"\n");    
+        BufferedWriter escritor = new BufferedWriter(escritorAlarchivo);
+        for (DatoJugador dato : datos) {
+            escritor.write(dato.toString()+ "\n");
         }
         escritor.close();
     }
-    
-    public static ArrayList<DatoJugador> leer() throws IOException{
-        ArrayList<DatoJugador> listaPuntaje = new ArrayList();
-        
-        File directorio = new File(".");
-        File archivo = new File(directorio,"datosPuntajes.txt");
-        
-        FileReader lectorDelarchivo = new FileReader(archivo);
-        BufferedReader lector = new BufferedReader (lectorDelarchivo);
-        
-        String linea = lector.readLine();
 
-        while(linea != null ){
-            
-            
-            String[] cadena = linea.split("[$]");
-            
-            DatoJugador dato = new DatoJugador (cadena[0],Integer.parseInt(cadena[1]));
-            listaPuntaje.add(dato);
-            linea=lector.readLine();
+    public static ArrayList<DatoJugador> leer() throws IOException {
+        if (!archivo.exists()) {
+            archivo.createNewFile();
         }
-        lector.close(); 
+        ArrayList<DatoJugador> listaPuntaje = new ArrayList<>();
+        FileReader lectorDelarchivo = new FileReader(archivo);
+        BufferedReader lector = new BufferedReader(lectorDelarchivo);
+        String linea = lector.readLine();
+        while (linea != null) {
+            String[] cadena = linea.split("[$]");
+            DatoJugador dato = new DatoJugador(cadena[0], Integer.parseInt(cadena[1]));
+            listaPuntaje.add(dato);
+            linea = lector.readLine();
+        }
+        lector.close();
         return listaPuntaje;
     }
 }

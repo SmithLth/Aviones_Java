@@ -1,15 +1,15 @@
 import processing.core.*;
 import java.util.ArrayList;
+import ddf.minim.*;
 
 public class Mapa {
     static public int ancho, alto;
     public int bits;
-    
+    AudioPlayer colision, mover;
+
     public ArrayList<Nave> enemigos;
-    public static  Nave jugador;
-    public ArrayList<Objeto> asteroides; 
-    public ArrayList<Objeto> atributos;
-    
+    public Nave jugador;
+    public ArrayList<Objeto> asteroides, atributos;
     public int deley = 1500;
 
     int maxCantEnemigos;
@@ -27,8 +27,8 @@ public class Mapa {
     }
     
     public void controlPuntaje(){
-        Enemigo.velocidad=5-Jugador.puntaje/10; 
-        maxCantEnemigos=Jugador.puntaje/3;//4
+        Enemigo.velocidad-=((Jugador) jugador).puntaje/10; 
+        maxCantEnemigos=((Jugador) jugador).puntaje/3;//4
     }
     
     public void crearAtributos() {
@@ -43,8 +43,8 @@ public class Mapa {
     
     public void actualizarAtributos(){
         for (int i = 0; i < atributos.size(); i++) {
-            Atributo at =(Atributo)atributos.get(i);
             atributos.get(i).mover();
+            ((Atributo) atributos.get(i)).temporizadorAtributo(jugador);
             colicionObjetos(atributos, jugador);
         }    
     }
@@ -111,13 +111,20 @@ public class Mapa {
         for (int i = 0; i < objetos.size(); i++) {
             if (existeColicion(objetos.get(i).partes, nave.partes)) {
                 if((objetos.get(i) instanceof Atributo)){
-                    Atributo at =(Atributo)objetos.get(i);
-                    at.darAtributos();
+                    ((Atributo)objetos.get(i)).darAtributos(jugador);
                 }else{
                     nave.recibirImpacto();
                     objetos.get(i).recibirImpacto();
                     if(nave instanceof Jugador){
                         System.out.println(nave.vida);
+                    }else if(nave instanceof Enemigo){
+                        ((Jugador) jugador).puntaje++;
+                        
+                        System.out.println(((Jugador) jugador).puntaje);
+                    }else if(nave instanceof Asteroide && nave.vida == 0){
+                        ((Jugador) jugador).puntaje++;
+
+                        System.out.println(((Jugador) jugador).puntaje);
                     }
                 }
             }
@@ -149,7 +156,7 @@ public class Mapa {
     }
     
     private ArrayList<Objeto> convertir_a_Objeto(ArrayList<Nave> objetos){
-        ArrayList<Objeto> enemigosCon = new ArrayList();
+        ArrayList<Objeto> enemigosCon = new ArrayList<>();
         for (int i = 0; i < objetos.size(); i++) {
             Objeto naveConver = (Objeto)objetos.get(i);
             enemigosCon.add(naveConver);

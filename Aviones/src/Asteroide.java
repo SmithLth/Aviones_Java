@@ -1,7 +1,6 @@
 public class Asteroide extends Objeto{
-    int direccion=1;
-    int delay=8;
-    int contador=0;
+    private int direccion=1,delay=8,contador=0;
+
     public Asteroide(int posx, int posy, int vida) {
         super(posx, posy, vida);
         if(posicion.x==1){
@@ -11,6 +10,8 @@ public class Asteroide extends Objeto{
         this.forma = Forma.formaAste;
         crear();
     }
+
+    @Override
     public void mover(){
         if(contador>=delay){
             partes.clear();
@@ -21,13 +22,5 @@ public class Asteroide extends Objeto{
         }
         contador++;
         crear();        
-    }
-    @Override
-    public void recibirImpacto(){
-        super.recibirImpacto();
-        if(eliminado){
-            Jugador.puntaje++;
-            System.out.println(Jugador.puntaje);
-        }
     }
 }

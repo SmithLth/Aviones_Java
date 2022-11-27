@@ -1,22 +1,21 @@
 import processing.core.*;
 import java.util.ArrayList;
+
 public abstract class Objeto {
     public ArrayList<PVector> partes = new ArrayList<>();
     public PVector posicion = new PVector ();
-    boolean eliminado;
     int [][]forma;
     int vida;
+
     public Objeto(int posx,int posy,int vida) { 
         posicion.x=posx;
         posicion.y=posy;
-        eliminado=false;
         this.vida=vida;   
     }
     
     public void recibirImpacto (){
         vida--;
         if(vida==0){
-            eliminado=true;
             posicion.x = 1;
             posicion.y = -1;
         }
@@ -33,6 +32,6 @@ public abstract class Objeto {
             }
         }
     }
+
     protected abstract void mover ();
-    
 }
