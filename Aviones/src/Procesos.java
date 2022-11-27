@@ -5,13 +5,11 @@ import ddf.minim.*;
 
 public class Procesos extends PApplet {
     //Sonido
-    Minim minim;
+    static Minim minim;
     AudioPlayer inicio, espacio, over, disparar;
 
     private int ancho = 560, alto = 700, bits = 5;
-    private int tiempo=200, contador=0;
-    private int estadoGame = 0;
-    
+    private int estadoGame;
     Mapa mapa = new Mapa(bits,ancho,alto);
     
     PImage fondo, corazon, welcomescreen, bala, start,logo,gameOver;
@@ -21,7 +19,7 @@ public class Procesos extends PApplet {
     // nave 
     PImage jugador1,jugador2,jugador3;
     
-    private int scroll =0;
+    private int scroll;
     private ArrayList<DatoJugador> tablaPuntajes = new ArrayList<>();
 
     @Override
