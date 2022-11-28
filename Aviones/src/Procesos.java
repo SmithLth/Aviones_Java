@@ -16,8 +16,8 @@ public class Procesos extends PApplet {
     /// reconds
     PImage cintillo, copa1, copa2, copa3 , goat, puntajes,atras;
     PFont font2;
-    // nave 
-    PImage jugador1,jugador2,jugador3;
+    // en juego 
+    PImage jugador1,jugador2,jugador3,pauseFondo,pause;
     //game Over
     PImage alien, alienCon, luna, tierra,gameOver,resNo,resSi;
     //records
@@ -43,14 +43,16 @@ public class Procesos extends PApplet {
         fondo = loadImage("/img/fondo.jpg");
         logo = loadImage("/img/space.png");
         start = loadImage("/img/star2.png");
-        welcomescreen = loadImage("/img/fondo4-02.png");
+        welcomescreen = loadImage("/img/fondo4-03.png");
         boton= loadImage("/img/boton.png");
         lCreditos = loadImage("/img/creditos.png");
         lRecords= loadImage("/img/records.png");
         astro= loadImage("/img/astro.png");
         cohete= loadImage("/img/cohetee.png");
-        //navesJugador
+        //en juego
         jugador1= loadImage("/img/jugador2.png");
+        pauseFondo = loadImage("/img/pauseFondo.png");
+        pause=loadImage("/img/pause.png");
         //menuGameOver        
         gameOver = loadImage("/img/gameOver2.png");
         alien = loadImage("/img/alien.png");
@@ -198,6 +200,7 @@ public class Procesos extends PApplet {
             && mouseY >= alto / 2 - 45 && mouseY <= alto / 2 + 45
                 && mousePressed && estadoGame==0) {
             mapa = new Mapa(bits,ancho,alto);
+            Enemigo.velocidad=20;
             estadoGame = 1;
         }
         if (mouseX >= ancho * 3/ 4  && mouseX <= ancho    // de menu a record
@@ -209,6 +212,7 @@ public class Procesos extends PApplet {
             && mouseY >= alto - 100 && mouseY <= alto 
                 && (mousePressed && estadoGame==3)) {
                     mapa = new Mapa(bits,ancho,alto);
+                    Enemigo.velocidad=20;
                     estadoGame = 1;
         }
         if (mouseX >=0  && mouseX <= ancho/4 // de record a menu
@@ -220,6 +224,7 @@ public class Procesos extends PApplet {
             && mouseY >= alto - 100 && mouseY <= alto 
                 && (mousePressed && estadoGame==2)) {
             estadoGame = 0;
+            mousePressed=false;
         }
         else if (mouseX >= ancho * 3/ 4 -15  && mouseX <= ancho   // de game over a juego
             && mouseY >= alto - 200 && mouseY <= alto-120 
@@ -300,9 +305,13 @@ public class Procesos extends PApplet {
             disparar.play(1);
             mapa.jugador.disparar();
         }
-        if (key == 'P') {
+        if (keyCode == 'P') {
             if (looping) {
+                image(pauseFondo, 0, 0,ancho*5,alto*5);
+                imageMode(CENTER);
+                image(pause, ancho/2, alto/2,400,80);
                 noLoop();
+
             } else {
                 loop();
             }

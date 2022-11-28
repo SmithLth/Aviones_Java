@@ -27,8 +27,11 @@ public class Mapa {
     }
     
     public void controlPuntaje(){
-        Enemigo.velocidad-=((Jugador) jugador).puntaje/10; 
-        maxCantEnemigos=((Jugador) jugador).puntaje/3;//4
+        if(Enemigo.velocidad>1){
+            Enemigo.velocidad=5-((Jugador) jugador).puntaje/5; 
+            maxCantEnemigos=((Jugador) jugador).puntaje/3;//4
+        }
+        
     }
     
     public void crearAtributos() {
