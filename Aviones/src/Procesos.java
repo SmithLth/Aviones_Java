@@ -34,7 +34,7 @@ public class Procesos extends PApplet {
     public void setup() {
         minim = new Minim(this);
 
-        soundMenu = minim.loadFile("/sound/soundMenu.mp3");
+        soundMenu = minim.loadFile("/sound/soundJuego2.mp3");
         soundJuego = minim.loadFile("/sound/soundJuego.mp3");
         soundGameOver = minim.loadFile("/sound/soundGameOver.mp3");
         soundDisparar = minim.loadFile("/sound/soundDisparar.mp3");
@@ -88,7 +88,7 @@ public class Procesos extends PApplet {
             soundJuego.pause();
             soundGameOver.pause();
             if (!soundMenu.isPlaying()) {
-                soundMenu.setGain(-30);// bajar volumen
+                //soundMenu.setGain(-10);// bajar volumen
                 soundMenu.play(1);
             }
             menuInicio();
@@ -96,7 +96,7 @@ public class Procesos extends PApplet {
             soundGameOver.pause();
             soundMenu.pause();
             if (!soundJuego.isPlaying()) {
-                soundJuego.setGain(-40);// bajar volumen
+                //soundJuego.setGain(-5);// bajar volumen
                 soundJuego.play(1);
             }
             cargarFondoScroll();
@@ -112,17 +112,17 @@ public class Procesos extends PApplet {
             soundJuego.pause();
             soundMenu.pause();
             if (!soundGameOver.isPlaying()) {
-                soundGameOver.setGain(-30);// bajar volumen
+                //soundGameOver.setGain(-10);// bajar volumen
                 soundGameOver.play(1);
             }
             gameOver();
             mensajeGameOver();
         } else if (estadoGame == 3) {
-            soundMenu.setGain(-30);
+            //soundMenu.setGain(-10);
             soundGameOver.pause();
             soundJuego.pause();
             if (!soundMenu.isPlaying()) {
-                soundMenu.setGain(-30);// bajar volumen
+                //soundMenu.setGain(-10);// bajar volumen
                 soundMenu.play(1);
             }
             estadoRecords();
@@ -247,6 +247,7 @@ public class Procesos extends PApplet {
         } else if (mouseX >= ancho * 3 / 4 - 15 && mouseX <= ancho // de game over a juego
                 && mouseY >= alto - 200 && mouseY <= alto - 120
                 && (mousePressed && estadoGame == 2)) {
+            Enemigo.velocidad = 20;
             mapa = new Mapa(bits, ancho, alto);
             estadoGame = 1;
         }
@@ -319,7 +320,7 @@ public class Procesos extends PApplet {
             mapa.jugador.d = true;
         }
         if (key == ' ') {
-            soundDisparar.setGain(-30);
+            //soundDisparar.setGain(-30);
             soundDisparar.play(1);
             mapa.jugador.disparar();
         }
@@ -331,12 +332,13 @@ public class Procesos extends PApplet {
                 soundJuego.pause();
                 soundMenu.pause();
                 if (!soundPause.isPlaying()) {
-                    soundPause.setGain(-30);// bajar volumen
+                    //soundPause.setGain(-10);// bajar volumen
                     soundPause.play(1);
                 }
                 noLoop();
             } else {
                 soundPause.pause();
+                soundJuego.play();
                 loop();
             }
         }
