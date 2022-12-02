@@ -35,7 +35,7 @@ public class Mapa {
     public void crearAtributos() {
         if (contadorAtributo > deley-100) {
             int posxRandom = (int) (Math.random() * ((ancho-10)- 0) + 1);
-            int atributoRandom = (int) (Math.random() * (2- 0) + 1);
+            int atributoRandom = (int) (Math.random() * (4- 0) + 1);
             atributos.add(new Atributo(posxRandom, 1,1,atributoRandom));
             contadorAtributo = 0;
         }

@@ -1,9 +1,11 @@
 public class Jugador extends Nave {
+    public int formaDeMisil=0;
     public int puntaje;
 
     public Jugador(int posx, int posy, int[][] forma, int vida) {
         super(posx, posy, forma, vida);
         puntaje = 0;
+
     }
 
     public void disparar() {

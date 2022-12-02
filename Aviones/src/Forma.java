@@ -35,7 +35,7 @@ public class Forma{
                 { 0, 0, 0, 1, 1, 1, 0, 0, 0 },
     };
     
-    static private int [][] formaMisil = {
+    static public int [][] formaMisil = {
                 { 1, 1 },
                 { 0, 0 },
                 { 1, 1},

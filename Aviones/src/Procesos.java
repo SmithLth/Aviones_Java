@@ -19,12 +19,14 @@ public class Procesos extends PApplet {
     PFont font2;
     // en juego
     PImage jugador1, jugador2, jugador3, pauseFondo, pause,corazon,enemigo1,enemigo2;
+    PImage asteroide,atributoR,atributoV,atributoC,atributoF,misil1,misil2,misil3,textScore;
     // game Over
     PImage alien, alienCon, luna, tierra, gameOver, resNo, resSi;
     // records
 
     private int scroll;
     private ArrayList<DatoJugador> tablaPuntajes = new ArrayList<>();
+    private PImage enemigo;
 
     @Override
     public void settings() {
@@ -56,10 +58,21 @@ public class Procesos extends PApplet {
         corazon = loadImage("/img/corazon.png");
         enemigo1 = loadImage("/img/enemigo1.png");
         enemigo2 = loadImage("/img/enemigo2.png");
+        asteroide = loadImage("/img/roca.png");
+        
         // en juego
         jugador1 = loadImage("/img/jugador2.png");
         pauseFondo = loadImage("/img/pauseFondo.png");
         pause = loadImage("/img/pause.png");
+        atributoC =loadImage("/img/atributoC.png");
+        atributoV =loadImage("/img/atributoV.png");
+        atributoR =loadImage("/img/atributoR.png");
+        atributoF =loadImage("/img/atributoF.png");
+        misil1=loadImage("/img/misil1.png");
+        misil2=loadImage("/img/misil2.png");
+        misil3=loadImage("/img/misil3.png");
+        textScore = loadImage("/img/textScore.png");
+
         // menuGameOver
         gameOver = loadImage("/img/gameOver2.png");
         alien = loadImage("/img/alien.png");
@@ -151,24 +164,66 @@ public class Procesos extends PApplet {
         imageMode(CENTER);
             image(jugador1, mapa.jugador.posicion.x * bits + (mapa.jugador.forma[0].length / 2 + 1) * 5,
                     mapa.jugador.posicion.y * bits + (mapa.jugador.forma.length / 2) * 5, 50, 50);
+        
+        //jugadorMisiles            
+        
+        for (int i = 0; i < mapa.jugador.misiles.size(); i++) {
+            if(mapa.jugador.formaMisil==Forma.formaMisil){
+                image(misil2, mapa.jugador.misiles.get(i).posicion.x*bits,mapa.jugador.misiles.get(i).posicion.y*bits, 30, 30);       
+            }else if(mapa.jugador.formaMisil==Forma.formaEscudo){
+                image(misil1, mapa.jugador.misiles.get(i).posicion.x*bits,mapa.jugador.misiles.get(i).posicion.y*bits, 30, 30);         
+            }else if (mapa.jugador.formaMisil==Forma.formaMisil3){
+                image(misil3, mapa.jugador.misiles.get(i).posicion.x*bits,mapa.jugador.misiles.get(i).posicion.y*bits, 30, 30);       
+            } 
+        } 
         //vidas
         for (int i = 1; i <= mapa.jugador.vida; i++) {
             image(corazon, (25) * i, alto - 25, 20, 20);
         }
         //enemigos
-        PImage enemigo;
         imageMode(CORNER);
-        int random = (int) (Math.random() * (2- 0) + 1);
         for (int i = 0; i < mapa.enemigos.size(); i++) {
-            
-            if(random==1){
-                enemigo=enemigo1;
+            if(mapa.enemigos.get(i).posicion.y==-10){
+                int random = (int) (Math.random() * (2- 0) + 1);
+                if(random==1){
+                    enemigo=enemigo2;}
+                else {enemigo= enemigo1;}
+            }  
+            image(enemigo,mapa.enemigos.get(i).posicion.x* bits, mapa.enemigos.get(i).posicion.y* bits, 60, 60);
+            //misiles enemigos
+            for (int j = 0; j < mapa.enemigos.get(i).misiles.size(); j++) {
+                image(misil3, mapa.enemigos.get(i).misiles.get(j).posicion.x*bits, mapa.enemigos.get(i).misiles.get(j).posicion.y*bits, 30, 30);    
             }
-            else{
-                enemigo=enemigo2;
-            }
-            image(enemigo,mapa.enemigos.get(i).posicion.x* bits, mapa.enemigos.get(i).posicion.y* bits, 50, 50);
         }
+        //asteroide
+        for (int i = 0; i < mapa.asteroides.size(); i++) {
+            image(asteroide,mapa.asteroides.get(i).posicion.x*bits,mapa.asteroides.get(i).posicion.y*bits,70,70);
+        }
+        //atributos
+        for (int i = 0; i < mapa.atributos.size(); i++) {
+            if(((Atributo)mapa.atributos.get(i)).tipoAtributo==1){
+                image(atributoV,mapa.atributos.get(i).posicion.x*bits,mapa.atributos.get(i).posicion.y*bits,70,70);
+            }
+            if(((Atributo)mapa.atributos.get(i)).tipoAtributo==2){
+                image(atributoR,mapa.atributos.get(i).posicion.x*bits,mapa.atributos.get(i).posicion.y*bits,70,70);
+            }
+            if(((Atributo)mapa.atributos.get(i)).tipoAtributo==3){
+                image(atributoF,mapa.atributos.get(i).posicion.x*bits,mapa.atributos.get(i).posicion.y*bits,70,70);
+            }
+            if(((Atributo)mapa.atributos.get(i)).tipoAtributo==4){
+                image(atributoC,mapa.atributos.get(i).posicion.x*bits,mapa.atributos.get(i).posicion.y*bits,70,70);
+            }
+        }
+        // puntaje
+        image(textScore,5,5,70,20);
+        textFont(font2);
+        textSize(30);
+        text(((Jugador) mapa.jugador).puntaje, 100, 20);
+
+            
+        
+
+
 
 
 
@@ -271,10 +326,12 @@ public class Procesos extends PApplet {
                 && mousePressed && estadoGame == 0) {
             estadoGame = 4;
             mousePressed = false;
-        } else if (mouseX >= ancho * 3 / 4 && mouseX <= ancho // de help a menu
-                && mouseY >= alto - 100 && mouseY <= alto
-                && (mousePressed && estadoGame == 4)) {
-            
+
+        }
+         if (mouseX >= 0 && mouseX <= ancho / 4 // de HELP a menu
+            && mouseY >= alto - 100 && mouseY <= alto
+             && mousePressed && estadoGame == 4) {
+            mousePressed = false;
             estadoGame = 0;
         }
 
@@ -295,6 +352,7 @@ public class Procesos extends PApplet {
                 && mouseY >= alto - 100 && mouseY <= alto
                 && mousePressed && estadoGame == 3) {
             estadoGame = 0;
+            mousePressed = false;
         }
         if (mouseX >= ancho * 3 / 4 - 15 && mouseX <= ancho // de game over a soundMenu
                 && mouseY >= alto - 100 && mouseY <= alto

@@ -2,6 +2,7 @@ public class Atributo extends Objeto{
     public int tipoAtributo ;
     public int contador=0;
     int contador2=0;
+    
     public Atributo (int posx, int posy,int vida,int atributo){
         super(posx,posy,0);
         this.forma=Forma.formaEscudo;
@@ -22,14 +23,17 @@ public class Atributo extends Objeto{
 
     public void darAtributos(Nave jugador){
         posicion.y = -30;
-        if(tipoAtributo==0){
-            jugador.vida= jugador.vida+10;   
-        }   
         if(tipoAtributo==1){
+            jugador.vida= jugador.vida+2;   
+        }   
+        if(tipoAtributo==2){
             jugador.formaMisil=Forma.formaMisil3;
         } 
-        if(tipoAtributo==2){
+        if(tipoAtributo==3){
             jugador.formaMisil=Forma.formaAste;
+        } 
+        if(tipoAtributo==4){
+            jugador.formaMisil=Forma.formaEscudo;
         } 
     }
     
