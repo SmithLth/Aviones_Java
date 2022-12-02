@@ -1,7 +1,5 @@
 import processing.core.*;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
@@ -24,14 +22,14 @@ public class TestMapa
         Objeto jugadorNoValido = new Jugador(-10, -5, Forma.getFormaJugador(), 1);
         assertEquals(false,mapa.posicionValidaY(jugadorNoValido));
         
-        Objeto jugadorEnMedio = new Jugador(mapa.ancho / 2, mapa.alto - 9, Forma.getFormaJugador(), 200);
+        Objeto jugadorEnMedio = new Jugador(Mapa.ancho / 2, Mapa.alto - 9, Forma.getFormaJugador(), 200);
         assertEquals(true,mapa.posicionValidaY(jugadorEnMedio));
     }
     
     @Test
     public void testExisteColicion(){
-        ArrayList<PVector> partes1 = new ArrayList();
-        ArrayList<PVector> partes2 = new ArrayList(); 
+        ArrayList<PVector> partes1 = new ArrayList<>();
+        ArrayList<PVector> partes2 = new ArrayList<>(); 
         partes1.add(new PVector (1,3));
         partes2.add(new PVector (1,3));
         

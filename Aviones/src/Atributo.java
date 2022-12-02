@@ -21,8 +21,7 @@ public class Atributo extends Objeto{
     }
 
     public void darAtributos(Nave jugador){
-        posicion.x = 1;
-        posicion.y = -1;
+        posicion.y = -30;
         if(tipoAtributo==0){
             jugador.vida= jugador.vida+10;   
         }   

@@ -17,7 +17,7 @@ public abstract class Objeto {
         vida--;
         if(vida==0){
             posicion.x = 1;
-            posicion.y = -1;
+            posicion.y = -30;
         }
     }
 

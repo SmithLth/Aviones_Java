@@ -1,6 +1,6 @@
 public class Enemigo extends Nave {
     public int timeMisil = 0, timeMov = 0;
-    public static int velocidad = 20;
+    public static int velocidad = 5;
 
     public Enemigo(int posx, int posy, int[][] forma, int vida) {
         super(posx, posy, forma, vida);
@@ -50,5 +50,6 @@ public class Enemigo extends Nave {
             super.mover();
         }
         timeMov++;
+        crear();
     }
 }

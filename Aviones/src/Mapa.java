@@ -1,11 +1,9 @@
 import processing.core.*;
 import java.util.ArrayList;
-import ddf.minim.*;
 
 public class Mapa {
     static public int ancho, alto;
     public int bits;
-    AudioPlayer colision, mover;
 
     public ArrayList<Nave> enemigos;
     public Nave jugador;
@@ -35,7 +33,7 @@ public class Mapa {
     }
     
     public void crearAtributos() {
-        if (contadorAtributo > deley-700) {
+        if (contadorAtributo > deley-100) {
             int posxRandom = (int) (Math.random() * ((ancho-10)- 0) + 1);
             int atributoRandom = (int) (Math.random() * (2- 0) + 1);
             atributos.add(new Atributo(posxRandom, 1,1,atributoRandom));
@@ -102,8 +100,9 @@ public class Mapa {
     public void crearEnemigos(int[][] forma) {
         if (contador > deley) {
             if (enemigos.size() <= maxCantEnemigos) {
+                System.out.println("nuevo enemigo");
                 int posxRandom = (int) (Math.random() * (ancho - forma[0].length) + 1);
-                enemigos.add(new Enemigo(posxRandom, 1, forma, 1));
+                enemigos.add(new Enemigo(posxRandom, -10, forma, 1));
                 contador = 0;
             }
         }
@@ -116,18 +115,19 @@ public class Mapa {
                 if((objetos.get(i) instanceof Atributo)){
                     ((Atributo)objetos.get(i)).darAtributos(jugador);
                 }else{
-                    nave.recibirImpacto();
                     objetos.get(i).recibirImpacto();
+                    nave.recibirImpacto();
+
+                    if (!Procesos.soundExplosion.isPlaying()) {
+                        Procesos.soundExplosion.setGain(+50);// bajar volumen
+                        Procesos.soundExplosion.play(1);
+                    }
                     if(nave instanceof Jugador){
                         System.out.println(nave.vida);
                     }else if(nave instanceof Enemigo){
                         ((Jugador) jugador).puntaje++;
-                        
-                        System.out.println(((Jugador) jugador).puntaje);
                     }else if(nave instanceof Asteroide && nave.vida == 0){
                         ((Jugador) jugador).puntaje++;
-
-                        System.out.println(((Jugador) jugador).puntaje);
                     }
                 }
             }
@@ -137,16 +137,16 @@ public class Mapa {
         }
     }
 
-    private boolean posicionValidaY(Objeto objeto) {
+    boolean posicionValidaY(Objeto objeto) {
         boolean res = false;
         if (objeto.posicion.y <= alto - objeto.forma.length
-                && objeto.posicion.y >= 0) {
+                && objeto.posicion.y >= -25) {
             res = true;
         }
         return res;
     }
 
-    private boolean existeColicion(ArrayList<PVector> partes1, ArrayList<PVector> partes2) {
+    boolean existeColicion(ArrayList<PVector> partes1, ArrayList<PVector> partes2) {
         boolean existe = false;
         for (int j = 0; j < partes1.size(); j++) {
             for (int k = 0; k < partes2.size(); k++) {

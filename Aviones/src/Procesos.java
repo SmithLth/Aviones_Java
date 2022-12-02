@@ -5,19 +5,20 @@ import ddf.minim.*;
 
 public class Procesos extends PApplet {
     // Sonido
-    static Minim minim;
+	Minim minim;
     AudioPlayer soundMenu, soundJuego, soundGameOver, soundDisparar, soundPause;
+    public static AudioPlayer soundExplosion;
 
     private int ancho = 560, alto = 700, bits = 5;
     private int estadoGame;
     Mapa mapa = new Mapa(bits, ancho, alto);
     // menu
-    PImage fondo, welcomescreen, start, logo, boton, lCreditos, lRecords, astro, cohete;
+    PImage fondo, welcomescreen, start, logo, boton, lCreditos, lRecords, astro, cohete,fondoHelp;
     /// reconds
     PImage cintillo, copa1, copa2, copa3, goat, puntajes, atras;
     PFont font2;
     // en juego
-    PImage jugador1, jugador2, jugador3, pauseFondo, pause;
+    PImage jugador1, jugador2, jugador3, pauseFondo, pause,corazon,enemigo1,enemigo2;
     // game Over
     PImage alien, alienCon, luna, tierra, gameOver, resNo, resSi;
     // records
@@ -39,8 +40,10 @@ public class Procesos extends PApplet {
         soundGameOver = minim.loadFile("/sound/soundGameOver.mp3");
         soundDisparar = minim.loadFile("/sound/soundDisparar.mp3");
         soundPause = minim.loadFile("/sound/soundPause.mp3");
+        soundExplosion = minim.loadFile("/sound/soundExplosion.mp3");
         background(0);
         // menuInicio
+        fondoHelp = loadImage("/img/fondoHelp.jpeg");
         fondo = loadImage("/img/fondo.jpg");
         logo = loadImage("/img/space.png");
         start = loadImage("/img/star2.png");
@@ -50,6 +53,9 @@ public class Procesos extends PApplet {
         lRecords = loadImage("/img/records.png");
         astro = loadImage("/img/astro.png");
         cohete = loadImage("/img/cohetee.png");
+        corazon = loadImage("/img/corazon.png");
+        enemigo1 = loadImage("/img/enemigo1.png");
+        enemigo2 = loadImage("/img/enemigo2.png");
         // en juego
         jugador1 = loadImage("/img/jugador2.png");
         pauseFondo = loadImage("/img/pauseFondo.png");
@@ -101,9 +107,7 @@ public class Procesos extends PApplet {
             }
             cargarFondoScroll();
             cargarOjetos();
-            imageMode(CENTER);
-            image(jugador1, mapa.jugador.posicion.x * bits + (mapa.jugador.forma[0].length / 2 + 1) * 5,
-                    mapa.jugador.posicion.y * bits + (mapa.jugador.forma.length / 2) * 5, 50, 50);
+            playing();
             actualizar();
             if (mapa.jugador.vida == 0) {
                 estadoGame = 2;
@@ -126,7 +130,47 @@ public class Procesos extends PApplet {
                 soundMenu.play(1);
             }
             estadoRecords();
+        }  else if (estadoGame == 4) {
+            //soundMenu.setGain(-10);
+            soundGameOver.pause();
+            soundJuego.pause();
+            if (!soundMenu.isPlaying()) {
+                //soundMenu.setGain(-10);// bajar volumen
+                soundMenu.play(1);
+            }
+            imageMode(CORNER);
+            image(fondoHelp, 0, 0, ancho, alto);
         }
+            
+
+    }
+    
+
+    public void playing(){
+        //jugador
+        imageMode(CENTER);
+            image(jugador1, mapa.jugador.posicion.x * bits + (mapa.jugador.forma[0].length / 2 + 1) * 5,
+                    mapa.jugador.posicion.y * bits + (mapa.jugador.forma.length / 2) * 5, 50, 50);
+        //vidas
+        for (int i = 1; i <= mapa.jugador.vida; i++) {
+            image(corazon, (25) * i, alto - 25, 20, 20);
+        }
+        //enemigos
+        PImage enemigo;
+        imageMode(CORNER);
+        int random = (int) (Math.random() * (2- 0) + 1);
+        for (int i = 0; i < mapa.enemigos.size(); i++) {
+            
+            if(random==1){
+                enemigo=enemigo1;
+            }
+            else{
+                enemigo=enemigo2;
+            }
+            image(enemigo,mapa.enemigos.get(i).posicion.x* bits, mapa.enemigos.get(i).posicion.y* bits, 50, 50);
+        }
+
+
 
     }
 
@@ -222,11 +266,24 @@ public class Procesos extends PApplet {
             Enemigo.velocidad = 20;
             estadoGame = 1;
         }
+        if (mouseX >= 0 && mouseX <= ancho / 4 // de menu a help
+                && mouseY >= alto - 100 && mouseY <= alto
+                && mousePressed && estadoGame == 0) {
+            estadoGame = 4;
+            mousePressed = false;
+        } else if (mouseX >= ancho * 3 / 4 && mouseX <= ancho // de help a menu
+                && mouseY >= alto - 100 && mouseY <= alto
+                && (mousePressed && estadoGame == 4)) {
+            
+            estadoGame = 0;
+        }
+
         if (mouseX >= ancho * 3 / 4 && mouseX <= ancho // de soundMenu a record
                 && mouseY >= alto - 100 && mouseY <= alto
                 && (mousePressed && estadoGame == 0)) {
             estadoGame = 3;
             mousePressed = false;
+            
         } else if (mouseX >= ancho * 3 / 4 && mouseX <= ancho // de record a juego
                 && mouseY >= alto - 100 && mouseY <= alto
                 && (mousePressed && estadoGame == 3)) {
@@ -244,6 +301,7 @@ public class Procesos extends PApplet {
                 && (mousePressed && estadoGame == 2)) {
             estadoGame = 0;
             mousePressed = false;
+
         } else if (mouseX >= ancho * 3 / 4 - 15 && mouseX <= ancho // de game over a juego
                 && mouseY >= alto - 200 && mouseY <= alto - 120
                 && (mousePressed && estadoGame == 2)) {
@@ -296,7 +354,7 @@ public class Procesos extends PApplet {
         }
         for (int i = 0; i < mapa.jugador.misiles.size(); i++) {
             dibujarObjeto(mapa.jugador.misiles.get(i).partes);
-        }
+        } 
     }
 
     private void dibujarObjeto(ArrayList<PVector> partes) {
