@@ -1,6 +1,3 @@
- dsfaasdf$37
-smith$51
-null$54
- el pro$111
-LOPEX$179
-POPEX$263
+Edgar$2
+Smith$3
+anonimo$6

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 public abstract class Objeto {
     public ArrayList<PVector> partes = new ArrayList<>();
     public PVector posicion = new PVector ();
-    int [][]forma;
-    int vida;
+    protected int [][]forma;
+    public int vida;
 
     public Objeto(int posx,int posy,int vida) { 
         posicion.x=posx;

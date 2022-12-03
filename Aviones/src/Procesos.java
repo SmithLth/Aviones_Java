@@ -13,7 +13,7 @@ public class Procesos extends PApplet {
     private int estadoGame;
     Mapa mapa = new Mapa(bits, ancho, alto);
     // menu
-    PImage fondo, welcomescreen, start, logo, boton, lCreditos, lRecords, astro, cohete,fondoHelp;
+    PImage fondo, welcomescreen, start, logo, boton, help, lRecords, astro, cohete,fondoHelp;
     /// reconds
     PImage cintillo, copa1, copa2, copa3, goat, puntajes, atras;
     PFont font2;
@@ -27,7 +27,6 @@ public class Procesos extends PApplet {
 
     private int scroll;
     private ArrayList<DatoJugador> tablaPuntajes = new ArrayList<>();
-    private PImage enemigo;
 
     @Override
     public void settings() {
@@ -54,7 +53,7 @@ public class Procesos extends PApplet {
         start = loadImage("/img/star2.png");
         welcomescreen = loadImage("/img/fondo4-03.png");
         boton = loadImage("/img/boton.png");
-        lCreditos = loadImage("/img/creditos.png");
+        help = loadImage("/img/help.png");
         lRecords = loadImage("/img/records.png");
         astro = loadImage("/img/astro.png");
         cohete = loadImage("/img/cohetee.png");
@@ -176,7 +175,6 @@ public class Procesos extends PApplet {
                      mapa.jugador.posicion.y * bits + (mapa.jugador.forma.length / 2) * 5+8, 50, 50);
         
         //jugadorMisiles            
-        
         for (int i = 0; i < mapa.jugador.misiles.size(); i++) {
             if(mapa.jugador.formaMisil==Forma.formaMisil){//normal
                 image(misil2, mapa.jugador.misiles.get(i).posicion.x*bits+9,mapa.jugador.misiles.get(i).posicion.y*bits+6, 18, 18);       
@@ -252,7 +250,7 @@ public class Procesos extends PApplet {
         imageMode(CORNER);
 
         image(boton, 30, alto - 100, 140, 70);
-        image(lCreditos, 65, alto - 80, 80, 20);
+        image(help, 65, alto - 80, 80, 20);
 
         image(boton, ancho * 3 / 4 - 30, alto - 100, 140, 70);
         image(lRecords, ancho * 3 / 4, alto - 80, 80, 20);
@@ -402,17 +400,6 @@ public class Procesos extends PApplet {
         mapa.crearAsteroides();
         mapa.crearAtributos();
         mapa.crearEnemigos(Forma.getFormaEnemigo());
-        dibujarObjeto(mapa.jugador.partes);
-        dibujarMisiles();
-        for (int i = 0; i < mapa.enemigos.size(); i++) {
-            dibujarObjeto(mapa.enemigos.get(i).partes);
-        }
-        for (int i = 0; i < mapa.asteroides.size(); i++) {
-            dibujarObjeto(mapa.asteroides.get(i).partes);
-        }
-        for (int i = 0; i < mapa.atributos.size(); i++) {
-            dibujarObjeto(mapa.atributos.get(i).partes);
-        }
     }
 
     private void actualizar() {
@@ -420,23 +407,6 @@ public class Procesos extends PApplet {
         mapa.actualizarAtributos();
         mapa.actualizarEnemigos();
         mapa.actualizarJugador();
-    }
-
-    private void dibujarMisiles() {
-        for (int i = 0; i < mapa.enemigos.size(); i++) {
-            for (int j = 0; j < mapa.enemigos.get(i).misiles.size(); j++) {
-                dibujarObjeto(mapa.enemigos.get(i).misiles.get(j).partes);
-            }
-        }
-        for (int i = 0; i < mapa.jugador.misiles.size(); i++) {
-            dibujarObjeto(mapa.jugador.misiles.get(i).partes);
-        } 
-    }
-
-    private void dibujarObjeto(ArrayList<PVector> partes) {
-        for (int i = 0; i < partes.size(); i++) {
-            rect(partes.get(i).x * bits, partes.get(i).y * bits, bits, bits);
-        }
     }
 
     @Override
