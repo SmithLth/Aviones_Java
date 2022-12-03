@@ -35,7 +35,7 @@ public class Mapa {
     public void crearAtributos() {
         if (contadorAtributo > deley-40) {
             int posxRandom = (int) (Math.random() * ((ancho-10)- 0) + 1);
-            int atributoRandom = (int) (Math.random() * (4- 0) + 1);
+            int atributoRandom = (int) (Math.random() * (3- 0) + 1);
             atributos.add(new Atributo(posxRandom, 1,1,atributoRandom));
             contadorAtributo = 0;
         }
@@ -45,7 +45,7 @@ public class Mapa {
     public void actualizarAtributos(){
         for (int i = 0; i < atributos.size(); i++) {
             atributos.get(i).mover();
-            ((Atributo) atributos.get(i)).temporizadorAtributo(jugador);
+             Atributo.temporizadorAtributo(jugador);
             colicionObjetos(atributos, jugador);
         }    
     }

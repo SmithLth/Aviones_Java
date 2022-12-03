@@ -20,7 +20,7 @@ public class Procesos extends PApplet {
     // en juego
     PImage jugador1, jugador2, jugador3, pauseFondo, pause,corazon,enemigoMov1,enemigoMov2;
     PImage asteroide,atributoR,atributoV,atributoC,atributoF,misil1,misil2,misil3,textScore;
-    PImage poder,misilE;
+    PImage poder,misilE,misil4,misilNuclear;
     // game Over
     PImage alien, alienCon, luna, tierra, gameOver, resNo, resSi,banda;
     // records
@@ -77,6 +77,8 @@ public class Procesos extends PApplet {
         textScore = loadImage("/img/textScore.png");
         poder = loadImage("/img/poder.png");
         misilE=loadImage("/img/misilE.png");
+        misil4=loadImage("/img/misil4.png");
+        misilNuclear=loadImage("/img/misilNuclear.png");
         
         
 
@@ -176,12 +178,12 @@ public class Procesos extends PApplet {
         //jugadorMisiles            
         
         for (int i = 0; i < mapa.jugador.misiles.size(); i++) {
-            if(mapa.jugador.formaMisil==Forma.formaMisil){
+            if(mapa.jugador.formaMisil==Forma.formaMisil){//normal
                 image(misil2, mapa.jugador.misiles.get(i).posicion.x*bits+9,mapa.jugador.misiles.get(i).posicion.y*bits+6, 18, 18);       
-            }else if(mapa.jugador.formaMisil==Forma.formaMisil2){
-                image(misil1, mapa.jugador.misiles.get(i).posicion.x*bits,mapa.jugador.misiles.get(i).posicion.y*bits, 30, 30);         
-            }else if (mapa.jugador.formaMisil==Forma.formaMisil3){
-                image(misilE, mapa.jugador.misiles.get(i).posicion.x*bits,mapa.jugador.misiles.get(i).posicion.y*bits, 30, 30);       
+            }else if(mapa.jugador.formaMisil==Forma.formaMisil2){ //nclear
+                image(misilNuclear, mapa.jugador.misiles.get(i).posicion.x*bits+31,mapa.jugador.misiles.get(i).posicion.y*bits+20,70, 70);         
+            }else if (mapa.jugador.formaMisil==Forma.formaMisil3){ //fuego
+                image(misil4, mapa.jugador.misiles.get(i).posicion.x*bits+20,mapa.jugador.misiles.get(i).posicion.y*bits+28, 60,60 );       
             } 
         } 
         //vidas
@@ -211,17 +213,15 @@ public class Procesos extends PApplet {
         //atributos
         for (int i = 0; i < mapa.atributos.size(); i++) {
             if(((Atributo)mapa.atributos.get(i)).tipoAtributo==1){
-                image(atributoV,mapa.atributos.get(i).posicion.x*bits,mapa.atributos.get(i).posicion.y*bits,70,70);
+                image(atributoV,mapa.atributos.get(i).posicion.x*bits,mapa.atributos.get(i).posicion.y*bits,55,55);
             }
             if(((Atributo)mapa.atributos.get(i)).tipoAtributo==2){
-                image(atributoR,mapa.atributos.get(i).posicion.x*bits,mapa.atributos.get(i).posicion.y*bits,70,70);
+                image(atributoR,mapa.atributos.get(i).posicion.x*bits-10,mapa.atributos.get(i).posicion.y*bits-10,70,70);
             }
             if(((Atributo)mapa.atributos.get(i)).tipoAtributo==3){
-                image(atributoF,mapa.atributos.get(i).posicion.x*bits,mapa.atributos.get(i).posicion.y*bits,70,70);
+                image(atributoF,mapa.atributos.get(i).posicion.x*bits-15,mapa.atributos.get(i).posicion.y*bits-10,70,70);
             }
-            if(((Atributo)mapa.atributos.get(i)).tipoAtributo==4){
-                image(atributoC,mapa.atributos.get(i).posicion.x*bits,mapa.atributos.get(i).posicion.y*bits,70,70);
-            }
+            
         }
         // puntaje
         image(textScore,5,5,70,20);
