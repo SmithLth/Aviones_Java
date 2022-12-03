@@ -1,18 +1,18 @@
 public class Atributo extends Objeto{
     public int tipoAtributo ;
     public int contador=0;
-    int contador2=0;
-    
+    public static int contador2=0;
+
     public Atributo (int posx, int posy,int vida,int atributo){
         super(posx,posy,0);
-        this.forma=Forma.formaEscudo;
+        this.forma=Forma.formaMisil3;
         tipoAtributo=atributo;
         crear();  
     }
     
     @Override
     public void mover(){
-        if(contador>=50){
+        if(contador>=5){
             partes.clear();
             posicion.y = posicion.y + 1;
             contador=0;
@@ -27,23 +27,21 @@ public class Atributo extends Objeto{
             jugador.vida= jugador.vida+2;   
         }   
         if(tipoAtributo==2){
-            jugador.formaMisil=Forma.formaMisil3;
+            jugador.formaMisil=Forma.formaMisil2;
         } 
         if(tipoAtributo==3){
-            jugador.formaMisil=Forma.formaAste;
-        } 
-        if(tipoAtributo==4){
-            jugador.formaMisil=Forma.formaEscudo;
+            jugador.formaMisil=Forma.formaMisil3;
         } 
     }
     
-    public void temporizadorAtributo(Nave jugador){
+    public static void temporizadorAtributo(Nave jugador){
         if(jugador.formaMisil != Forma.getFormaMisil()){
-            if(contador2>=1000){
+            if(contador2>900){
                 jugador.formaMisil=Forma.getFormaMisil(); 
                 contador2=0;
             }
             contador2++;
         }
+
     }
 }

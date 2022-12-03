@@ -19,21 +19,21 @@ public class Mapa {
         ancho = anchoo / bits;
         alto = altoo / bits;
         enemigos = new ArrayList<>();
-        jugador = new Jugador(ancho / 2, alto - 9, Forma.getFormaMisil2(), 10);
+        jugador = new Jugador(ancho / 2, alto - 9, Forma.formaJugador, 7);
         asteroides = new ArrayList<>();
         atributos = new ArrayList<>();
     }
     
     public void controlPuntaje(){
         if(Enemigo.velocidad>1){
-            Enemigo.velocidad=5-((Jugador) jugador).puntaje/5; 
-            maxCantEnemigos=((Jugador) jugador).puntaje/3;//4
+            Enemigo.velocidad=10-((Jugador) jugador).puntaje/3; 
+            maxCantEnemigos=((Jugador) jugador).puntaje/5;//4
         }
         
     }
     
     public void crearAtributos() {
-        if (contadorAtributo > deley-100) {
+        if (contadorAtributo > deley-40) {
             int posxRandom = (int) (Math.random() * ((ancho-10)- 0) + 1);
             int atributoRandom = (int) (Math.random() * (4- 0) + 1);
             atributos.add(new Atributo(posxRandom, 1,1,atributoRandom));
@@ -114,6 +114,18 @@ public class Mapa {
             if (existeColicion(objetos.get(i).partes, nave.partes)) {
                 if((objetos.get(i) instanceof Atributo)){
                     ((Atributo)objetos.get(i)).darAtributos(jugador);
+                    if(((Atributo)objetos.get(i)).tipoAtributo==1){
+                        if (!Procesos.soundAtributoVida.isPlaying()) {
+                            Procesos.soundAtributoVida.setGain(+10);// bajar volumen
+                            Procesos.soundAtributoVida.play(1);
+                        }    
+                    }else{
+                        if (!Procesos.soundAtributo.isPlaying()) {
+                            Procesos.soundAtributo.setGain(+50);// bajar volumen
+                            Procesos.soundAtributo.play(1);
+                        }
+                    }
+                    
                 }else{
                     objetos.get(i).recibirImpacto();
                     nave.recibirImpacto();

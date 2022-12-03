@@ -7,7 +7,7 @@ public class Procesos extends PApplet {
     // Sonido
 	Minim minim;
     AudioPlayer soundMenu, soundJuego, soundGameOver, soundDisparar, soundPause;
-    public static AudioPlayer soundExplosion;
+    public static AudioPlayer soundExplosion,soundAtributo,soundAtributoVida;
 
     private int ancho = 560, alto = 700, bits = 5;
     private int estadoGame;
@@ -18,10 +18,11 @@ public class Procesos extends PApplet {
     PImage cintillo, copa1, copa2, copa3, goat, puntajes, atras;
     PFont font2;
     // en juego
-    PImage jugador1, jugador2, jugador3, pauseFondo, pause,corazon,enemigo1,enemigo2;
+    PImage jugador1, jugador2, jugador3, pauseFondo, pause,corazon,enemigoMov1,enemigoMov2;
     PImage asteroide,atributoR,atributoV,atributoC,atributoF,misil1,misil2,misil3,textScore;
+    PImage poder,misilE;
     // game Over
-    PImage alien, alienCon, luna, tierra, gameOver, resNo, resSi;
+    PImage alien, alienCon, luna, tierra, gameOver, resNo, resSi,banda;
     // records
 
     private int scroll;
@@ -43,6 +44,8 @@ public class Procesos extends PApplet {
         soundDisparar = minim.loadFile("/sound/soundDisparar.mp3");
         soundPause = minim.loadFile("/sound/soundPause.mp3");
         soundExplosion = minim.loadFile("/sound/soundExplosion.mp3");
+        soundAtributo = minim.loadFile("/sound/soundAtributo.mp3");
+        soundAtributoVida = minim.loadFile("/sound/soundAtributoVida.mp3");
         background(0);
         // menuInicio
         fondoHelp = loadImage("/img/fondoHelp.jpeg");
@@ -56,8 +59,8 @@ public class Procesos extends PApplet {
         astro = loadImage("/img/astro.png");
         cohete = loadImage("/img/cohetee.png");
         corazon = loadImage("/img/corazon.png");
-        enemigo1 = loadImage("/img/enemigo1.png");
-        enemigo2 = loadImage("/img/enemigo2.png");
+        enemigoMov1 = loadImage("/img/enemigoMov1.png");
+        enemigoMov2 = loadImage("/img/enemigoMov2.png");
         asteroide = loadImage("/img/roca.png");
         
         // en juego
@@ -72,6 +75,10 @@ public class Procesos extends PApplet {
         misil2=loadImage("/img/misil2.png");
         misil3=loadImage("/img/misil3.png");
         textScore = loadImage("/img/textScore.png");
+        poder = loadImage("/img/poder.png");
+        misilE=loadImage("/img/misilE.png");
+        
+        
 
         // menuGameOver
         gameOver = loadImage("/img/gameOver2.png");
@@ -81,6 +88,7 @@ public class Procesos extends PApplet {
         tierra = loadImage("/img/tierra.png");
         resNo = loadImage("/img/no.png");
         resSi = loadImage("/img/si.png");
+        banda=loadImage("/img/banda.png");
         // menuRecords
         cintillo = loadImage("/img/cinta.png");
         copa1 = loadImage("/img/1ro.png");
@@ -162,18 +170,18 @@ public class Procesos extends PApplet {
     public void playing(){
         //jugador
         imageMode(CENTER);
-            image(jugador1, mapa.jugador.posicion.x * bits + (mapa.jugador.forma[0].length / 2 + 1) * 5,
-                    mapa.jugador.posicion.y * bits + (mapa.jugador.forma.length / 2) * 5, 50, 50);
+             image(jugador1, mapa.jugador.posicion.x * bits + (mapa.jugador.forma[0].length / 2 + 1) * 5-1,
+                     mapa.jugador.posicion.y * bits + (mapa.jugador.forma.length / 2) * 5+8, 50, 50);
         
         //jugadorMisiles            
         
         for (int i = 0; i < mapa.jugador.misiles.size(); i++) {
             if(mapa.jugador.formaMisil==Forma.formaMisil){
-                image(misil2, mapa.jugador.misiles.get(i).posicion.x*bits,mapa.jugador.misiles.get(i).posicion.y*bits, 30, 30);       
-            }else if(mapa.jugador.formaMisil==Forma.formaEscudo){
+                image(misil2, mapa.jugador.misiles.get(i).posicion.x*bits+9,mapa.jugador.misiles.get(i).posicion.y*bits+6, 18, 18);       
+            }else if(mapa.jugador.formaMisil==Forma.formaMisil2){
                 image(misil1, mapa.jugador.misiles.get(i).posicion.x*bits,mapa.jugador.misiles.get(i).posicion.y*bits, 30, 30);         
             }else if (mapa.jugador.formaMisil==Forma.formaMisil3){
-                image(misil3, mapa.jugador.misiles.get(i).posicion.x*bits,mapa.jugador.misiles.get(i).posicion.y*bits, 30, 30);       
+                image(misilE, mapa.jugador.misiles.get(i).posicion.x*bits,mapa.jugador.misiles.get(i).posicion.y*bits, 30, 30);       
             } 
         } 
         //vidas
@@ -183,21 +191,22 @@ public class Procesos extends PApplet {
         //enemigos
         imageMode(CORNER);
         for (int i = 0; i < mapa.enemigos.size(); i++) {
-            if(mapa.enemigos.get(i).posicion.y==-10){
-                int random = (int) (Math.random() * (2- 0) + 1);
-                if(random==1){
-                    enemigo=enemigo2;}
-                else {enemigo= enemigo1;}
-            }  
-            image(enemigo,mapa.enemigos.get(i).posicion.x* bits, mapa.enemigos.get(i).posicion.y* bits, 60, 60);
+            if(count<100){
+                image(enemigoMov1,mapa.enemigos.get(i).posicion.x* bits-1, mapa.enemigos.get(i).posicion.y* bits, 50,50);
+                
+            }else if(count<200){
+                image(enemigoMov2,mapa.enemigos.get(i).posicion.x* bits-1, mapa.enemigos.get(i).posicion.y* bits, 50, 50);    
+            }
+            else {count=1;}
             //misiles enemigos
             for (int j = 0; j < mapa.enemigos.get(i).misiles.size(); j++) {
-                image(misil3, mapa.enemigos.get(i).misiles.get(j).posicion.x*bits, mapa.enemigos.get(i).misiles.get(j).posicion.y*bits, 30, 30);    
+                image(misil3, mapa.enemigos.get(i).misiles.get(j).posicion.x*bits-9, mapa.enemigos.get(i).misiles.get(j).posicion.y*bits-10, 35, 35);    
             }
         }
+        count++; 
         //asteroide
         for (int i = 0; i < mapa.asteroides.size(); i++) {
-            image(asteroide,mapa.asteroides.get(i).posicion.x*bits,mapa.asteroides.get(i).posicion.y*bits,70,70);
+            image(asteroide,mapa.asteroides.get(i).posicion.x*bits-8,mapa.asteroides.get(i).posicion.y*bits-8,73,73);
         }
         //atributos
         for (int i = 0; i < mapa.atributos.size(); i++) {
@@ -218,16 +227,18 @@ public class Procesos extends PApplet {
         image(textScore,5,5,70,20);
         textFont(font2);
         textSize(30);
-        text(((Jugador) mapa.jugador).puntaje, 100, 20);
-
-            
+        text(((Jugador) mapa.jugador).puntaje, 90,25);
+        //tiempoPoder
         
-
-
-
-
-
+        Atributo.temporizadorAtributo(mapa.jugador);            
+        for (int j = 1; j <= 6-Atributo.contador2/150; j++) {
+            if(Atributo.contador2!=1&&Atributo.contador2!=0){
+                image(poder, (ancho*3/4-50)+25 * j, alto - 35, 20, 20);
+            }       
+        }   
     }
+    int count=1;
+    
 
     public void menuInicio() {
         imageMode(CENTER);
@@ -254,12 +265,19 @@ public class Procesos extends PApplet {
         image(alienCon, 110, alto / 2 - 40, 280, 140);
 
         image(gameOver, 30, 10, 320, 200);
-        imageMode(CORNER);
         image(tierra, -50, alto - 160, 350, 370);
         image(alien, 5, alto / 2 + 40, 240, 260);
 
         image(resSi, ancho * 3 / 4 - 15, alto - 200, 140, 100);
         image(resNo, ancho * 3 / 4 - 15, alto - 100, 140, 100);
+
+        image(banda, ancho * 3 / 4 - 15, alto/4+10, 220, 80);
+        image(textScore,ancho * 3 / 4+10,alto/2-140,70,20);
+        textFont(font2);
+        textSize(30);
+        text(((Jugador) mapa.jugador).puntaje, ancho *3/4+90, alto/2-120);
+
+
     }
 
     public void mensajeGameOver() {
