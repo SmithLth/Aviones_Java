@@ -281,7 +281,7 @@ public class Procesos extends PApplet {
     public void mensajeGameOver() {
         if (mapa.jugador.vida == 0 &&
                 (tablaPuntajes.get(tablaPuntajes.size() - 1).getPuntaje() < ((Jugador) mapa.jugador).puntaje)) {
-            String name = JOptionPane.showInputDialog("tu nombre crack ;)");
+            String name = JOptionPane.showInputDialog("Tu nombre crack ;)");
             JOptionPane.showMessageDialog(null, "Nuevo record!!: " + ((Jugador) mapa.jugador).puntaje);
             tablaPuntajes.add(new DatoJugador(name, ((Jugador) mapa.jugador).puntaje));
             if (tablaPuntajes.size() > 6) {
@@ -299,7 +299,6 @@ public class Procesos extends PApplet {
         imageMode(CORNER);
         image(welcomescreen, 0, 0);
         // botones
-
         image(boton, 30, alto - 100, 140, 70);
         image(atras, 75, alto - 95, 40, 50);
         image(boton, ancho * 3 / 4 - 30, alto - 100, 140, 70);
