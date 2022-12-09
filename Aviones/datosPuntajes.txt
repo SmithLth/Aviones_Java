@@ -1,4 +1,3 @@
 -$0
 Smith$3
 anonimo$6
-null$34
